@@ -44,18 +44,8 @@
             $nganh = addslashes($_POST['nganh']);
             $mgv = addslashes($_POST['mgv']);
             $gioitinh = addslashes($_POST['gioitinh']);
-            if($gioitinh == 'Nam'){
-                $gioitinh = 1;
-            }
-            else if($gioitinh == 'Nữ'){
-                $gioitinh = 2; 
-            }
-            $sql3 = "SELECT ID FROM chuyennganh WHERE tenCN = '$nganh'";
-            $result3 = mysqli_query($conn, $sql3);
-            $row3 = mysqli_fetch_assoc($result3);
-            $manganh = $row3['ID'];
 
-            $sql4 = "UPDATE taikhoan SET ho_ten = '$hoten', chuyennganh_ID = '$manganh', gioi_tinh = '$gioitinh', maTK = '$mgv'  WHERE ID= '$taikhoan_ID'";
+            $sql4 = "UPDATE taikhoan SET ho_ten = '$hoten', chuyennganh_ID = '$nganh', gioitinh_ID = '$gioitinh', maTK = '$mgv'  WHERE ID= '$taikhoan_ID'";
             $result4 = mysqli_query($conn, $sql4);
             echo"<script>Swal.fire({
                 icon: 'info',
@@ -72,7 +62,7 @@
                         <span class="icon">
                             <ion-icon name="cafe-outline"></ion-icon>
                         </span>
-                        <span class="title">Giáo viên</span>
+                        <span class="title">Giảng viên</span>
                     </a>
                 </li>
                 <li>
@@ -143,15 +133,15 @@
                 </div>
                 <div class="username">
                 <?php
-                        $sql = "SELECT ho_ten, gioi_tinh,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
+                        $sql = "SELECT ho_ten, gioitinh_id,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);
                         $loichao = "Chào ";
                         if($row['ho_ten'] != ''){
-                            if($row['gioi_tinh'] == 1){
+                            if($row['gioitinh_id'] == 2){
                                 $loichao = $loichao . "thầy ";
                             }
-                            else if($row['gioi_tinh'] == 2){
+                            else if($row['gioitinh_id'] == 3){
                                 $loichao = $loichao . "cô ";
                             } 
                             echo '<h2>'.$loichao .$row['ho_ten'].'<h2>'; 
@@ -168,25 +158,16 @@
                     <div class="cardHeader">
                         <h2>Thông tin cá nhân</h2>
                     </div>
-                    <form action="gv_thongtin.php" method="POST">
                     <?php
-                            $sql = "SELECT ho_ten,tenTK,tenCN,gioi_tinh,maTK,khoa FROM taikhoan JOIN chuyennganh on chuyennganh_ID = chuyennganh.ID
+                            $sql = "SELECT ho_ten,tenTK,chuyennganh_ID,gioitinh_ID,maTK,khoa FROM taikhoan JOIN chuyennganh ON chuyennganh_ID = chuyennganh.ID
                             WHERE taikhoan.ID = '$taikhoan_ID'";
                             $result = mysqli_query($conn, $sql);
                             $row2 = mysqli_fetch_assoc($result);
                             if($row2['khoa'] == 0){
                                 $row2['khoa'] = 42;
                             }
-                            if($row2['gioi_tinh'] == 1){
-                                $gioitinh = 'Nam';
-                            }
-                            else if(['gioi_tinh'] == 2){
-                                $gioitinh = 'Nữ';
-                            }
-                            else{
-                                $gioitinh = '';
-                            }
                         ?>
+                    <form action="gv_thongtin.php" method="POST">
                         <div class="row50">
                             <div class="input-box">
                                 <span>Họ tên</span>
@@ -194,17 +175,20 @@
                             </div>
                             <div class="input-box">
                                 <span>Chuyên ngành</span>
-                                <input list="dsnganh" name="nganh" value="<?php echo $row2['tenCN'];?>" autocomplete="off" required />
-                                <datalist id="dsnganh">
-                                    <?php
-                                    $sql ="SELECT tenCN FROM chuyennganh";
+                                <select name = "nganh">
+                                <?php
+                                    $sql ="SELECT ID,tenCN FROM chuyennganh";
                                     $result = mysqli_query($conn, $sql);
-                                    while( $row = mysqli_fetch_assoc($result)){    
-                                    ?>
-                                    <option value="<?php echo $row["tenCN"];?>">
-                                        <?php }
+                                    while( $row = mysqli_fetch_assoc($result)){
+                                        if($row['ID'] == $row2['chuyennganh_ID']){
+                                            echo '<option value="'.$row['ID'].'" selected>'. $row['tenCN'] .'</option>';
+                                        }
+                                        else{
+                                            echo '<option value="'.$row['ID'].'">'. $row['tenCN'] .'</option>';
+                                        }
+                                    }
                                 ?>
-                                </datalist>
+                                </select>
                             </div>
                         </div>
                         <div class="row50">
@@ -220,11 +204,19 @@
                         <div class="row25">
                             <div class="input-box">
                                 <span>Giới tính</span>
-                                <input list="dsdetai" name="gioitinh" value="<?php echo $gioitinh;?>" required  />
-                                <datalist id="dsdetai">
-                                    <option value="Nam">
-                                    <option value="Nữ">
-                                </datalist> 
+                                <select name="gioitinh">
+                                <?php
+                                    $sql ="SELECT ID,tenGT FROM gioitinh";
+                                    $result = mysqli_query($conn, $sql);
+                                    while( $row = mysqli_fetch_assoc($result)){
+                                        if($row['ID'] == $row2['gioitinh_ID']){
+                                            echo '<option value="'.$row['ID'].'" selected>'. $row['tenGT'] .'</option>';
+                                        }
+                                        else{
+                                            echo '<option value="'.$row['ID'].'">'. $row['tenGT'] .'</option>';
+                                        }
+                                    }
+                                ?>
                             </div>
                         </div>
                         <div class="row100">

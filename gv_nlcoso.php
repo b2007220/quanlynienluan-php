@@ -38,6 +38,11 @@
             $hocky = 3;
         }
         else $hocky = 1;
+         
+        $sql = "SELECT ID FROM loaidetai WHERE ten_loai = 'Niên luận cơ sở'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $loai_de_tai_id = $row['ID'];
     ?>
     <div class="container">
         <div class="navigation">
@@ -47,7 +52,7 @@
                         <span class="icon">
                             <ion-icon name="cafe-outline"></ion-icon>
                         </span>
-                        <span class="title">Giáo viên</span>
+                        <span class="title">Giảng viên</span>
                     </a>
                 </li>
                 <li>
@@ -118,15 +123,15 @@
                 </div>
                 <div class="username">
                     <?php
-                        $sql = "SELECT ho_ten, gioi_tinh,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
+                        $sql = "SELECT ho_ten, gioitinh_id,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);
                         $loichao = "Chào ";
                         if($row['ho_ten'] != ''){
-                            if($row['gioi_tinh'] == 1){
+                            if($row['gioitinh_id'] == 2){
                                 $loichao = $loichao . "thầy ";
                             }
-                            else if($row['gioi_tinh'] == 2){
+                            else if($row['gioitinh_id'] == 3){
                                 $loichao = $loichao . "cô ";
                             } 
                             echo '<h2>'.$loichao .$row['ho_ten'].'<h2>'; 
@@ -166,7 +171,7 @@
                                     $timkiem = addslashes($_POST['timkiem']);
                                     $sql = $sql . " dangky_detai.taikhoan_ID = '$timkiem' AND";
                                 }
-                                $sql = $sql. " phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = 'loai0001'
+                                $sql = $sql. " phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = $loai_de_tai_id
                                         ORDER BY ngay_bao_cao DESC
                                         LIMIT 15";
                                 $result = mysqli_query($conn, $sql);
@@ -194,24 +199,27 @@
                                 <tr>
                                     <td>Họ và tên</td>
                                     <td>Đề tài</td>
+                                    <td>Trạng thái</td>
                                     <td>Xem</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $sql ="SELECT ho_ten, tenDT, dangky_detai.taikhoan_ID
+                                $sql ="SELECT ho_ten, tenDT, dangky_detai.taikhoan_ID, ten_trang_thai
                                 FROM taikhoan JOIN  dangky_detai ON taikhoan.ID = taikhoan_ID
                                         JOIN bangdt ON bangdt_ID = bangdt.ID
                                         JOIN detai_loaidetai ON detai_loaidetai_ID = detai_loaidetai.ID
                                         JOIN detai ON detai.ID = detai_ID
-                                        WHERE phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = 'loai0001'";
+                                        JOIN trangthai ON trangthai_ID = trangthai.ID
+                                        WHERE phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = $loai_de_tai_id";
                                 $result = mysqli_query($conn, $sql);
                                 while($row = mysqli_fetch_assoc($result)){ 
                             ?>
                                 <tr>
                                     <td><?php echo $row["ho_ten"]; ?></td>
                                     <td><?php echo $row["tenDT"]; ?></td>
-                                    <td><button class="btn" name="timkiem" value="<?php echo $row["taikhoan_ID"]; ?>">
+                                    <td><?php echo $row["ten_trang_thai"]; ?></td>
+                                    <td><button class="btn" name="timkiem" value="<?php echo $row["dangky_detai.taikhoan_ID"]; ?>">
                                             <ion-icon name="eye-outline"></ion-icon>
                                         </button></td>
                                 </tr>

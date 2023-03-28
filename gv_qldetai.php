@@ -75,7 +75,7 @@
                         <span class="icon">
                             <ion-icon name="cafe-outline"></ion-icon>
                         </span>
-                        <span class="title">Giáo viên</span>
+                        <span class="title">Giảng viên</span>
                     </a>
                 </li>
                 <li>
@@ -116,7 +116,7 @@
                         <span class="icon">
                             <ion-icon name="person-outline"></ion-icon>
                         </span>
-                        <span class="title">Thông tin giáo viên</span>
+                        <span class="title">Thông tin giảng viên</span>
                     </a>
                 </li>
                 <li>
@@ -145,23 +145,23 @@
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
                 <div class="username">
-                    <?php
-                          $sql = "SELECT hotengv,gioitinh FROM thongtingv  WHERE matk= '$matk'";
-                          $result = mysqli_query($conn, $sql);
-                          $row = mysqli_fetch_assoc($result);
-                          $loichao = "Chào ";
-                          if($row['hotengv'] != ''){
-                              if($row['gioitinh']== 1){
-                                  $loichao = $loichao . "thầy ";
-                              }
-                              else{
-                                  $loichao = $loichao . "cô ";
-                              } 
-                              echo '<h2>'.$loichao .$row['hotengv'].'<h2>'; 
-                          }
-                          else{
-                              echo '<h2>'.$loichao .$taikhoan.'<h2>'; 
-                          }
+                <?php
+                        $sql = "SELECT ho_ten, gioitinh_id,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_fetch_assoc($result);
+                        $loichao = "Chào ";
+                        if($row['ho_ten'] != ''){
+                            if($row['gioitinh_id'] == 2){
+                                $loichao = $loichao . "thầy ";
+                            }
+                            else if($row['gioitinh_id'] == 3){
+                                $loichao = $loichao . "cô ";
+                            } 
+                            echo '<h2>'.$loichao .$row['ho_ten'].'<h2>'; 
+                        }
+                        else{
+                            echo '<h2>'.$loichao .$row['tenTK'].'<h2>'; 
+                        }
                     ?>
                 </div>
             </div>

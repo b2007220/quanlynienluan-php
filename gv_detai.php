@@ -15,34 +15,30 @@
 
 <body>
     <?php 
-        if(!isset($_SESSION['taikhoan'])){
+        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
+        
+        $taikhoan_ID = $_SESSION['taikhoan_ID']; 
+
+ 
+        if(!isset($_SESSION['taikhoan_ID'])){
             header('location:dangnhap.php');
         }
-        if($_SESSION['loai'] == 1){
-            header('location:sv_trangchu.php');
+        if($_SESSION['vai_tro'] == 2){
+            header('location:gv_nlcoso.php');
         }
-        if($_SESSION['loai'] == 0){
+        if($_SESSION['vai_tro'] == 0){
             header('location:ad_ql_gv.php');
         }
-        $conn = mysqli_connect("localhost", "root", "", "nienluan");
-        $matk = $_SESSION['matk'];    
-        $taikhoan = $_SESSION['taikhoan'];
-        $sql = "SELECT mgv FROM thongtingv WHERE matk = '$matk'";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
-        $mgv = $row['mgv'];
-        $date = getdate();
-        $month = $date['month'];
-        $year = $date['year'];
+        $month = date("m");
+        $nam =  date("Y");
         if($month >= 1 && $month <=5){
-            $hocki = 2;
+            $hocky = 2;
         }
         else if($month >= 6  && $month <=7){
-            $hocki = 3;
+            $hocky = 3;
         }
-        else $hocki = 1;
-    ?>
-    <?php
+        else $hocky = 1;
+
         if(isset($_POST['them'])){
             $mota = addslashes($_POST['mota']);
             $hinhthuc = $_POST['type'];
@@ -101,7 +97,7 @@
                         <span class="icon">
                             <ion-icon name="cafe-outline"></ion-icon>
                         </span>
-                        <span class="title">Giáo viên</span>
+                        <span class="title">Giảng viên</span>
                     </a>
                 </li>
                 <li>
@@ -142,7 +138,7 @@
                         <span class="icon">
                             <ion-icon name="person-outline"></ion-icon>
                         </span>
-                        <span class="title">Thông tin giáo viên</span>
+                        <span class="title">Thông tin giảng viên</span>
                     </a>
                 </li>
                 <li>
@@ -171,22 +167,22 @@
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
                 <div class="username">
-                    <?php
-                        $sql = "SELECT hotengv,gioitinh FROM thongtingv  WHERE matk= '$matk'";
+                <?php
+                        $sql = "SELECT ho_ten, gioitinh_id,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);
                         $loichao = "Chào ";
-                        if($row['hotengv'] != ''){
-                            if($row['gioitinh']== 1){
+                        if($row['ho_ten'] != ''){
+                            if($row['gioitinh_id'] == 2){
                                 $loichao = $loichao . "thầy ";
                             }
-                            else{
+                            else if($row['gioitinh_id'] == 3){
                                 $loichao = $loichao . "cô ";
                             } 
-                            echo '<h2>'.$loichao .$row['hotengv'].'<h2>'; 
+                            echo '<h2>'.$loichao .$row['ho_ten'].'<h2>'; 
                         }
                         else{
-                            echo '<h2>'.$loichao .$taikhoan.'<h2>'; 
+                            echo '<h2>'.$loichao .$row['tenTK'].'<h2>'; 
                         }
                     ?>
                 </div>
@@ -263,24 +259,11 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    // $detai_moi_trang = !empty($_GET['per_page']) ? $_GET['per_page'] :5;
-                                    // $trang_hien_tai = !empty($_GET['per_page']) ? $_GET['per_page'] :1;
-                                    // $offset = ($trang_hien_tai - 1) * $detai_moi_trang;
-
                                     $sql ="SELECT s.madt,ten,nam,hocki,hinhthuc,mota FROM 
                                             detai d JOIN sudung s ON d.madt=s.madt 
                                             WHERE mgv = '$mgv' and hocki = '$hocki' and nam = '$year'
                                             order by hinhthuc DESC";
-                                            // -- limit ". $detai_moi_trang . " OFFSET ". $offset."";
-                                    
                                     $result = mysqli_query($conn, $sql);
-                                    // $sql2 = "SELECT s.madt,ten,nam,hocki,hinhthuc,mota FROM 
-                                    // detai d JOIN sudung s ON d.madt=s.madt 
-                                    // WHERE mgv = '$mgv' and hocki = '$hocki' and nam = '$year'";
-                                    // $result2 = mysqli_query($conn, $sql2);
-                                    // $count = mysqli_num_rows($result2);
-                                    // $tong_trang = ceil($count / $detai_moi_trang);
-
                                     while($row = mysqli_fetch_assoc($result)){
                                         switch($row['hinhthuc']){
                                             case 1: $loainienluan = "Niên luận cơ sở";  break;
