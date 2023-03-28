@@ -114,7 +114,10 @@
                     $row4 = mysqli_fetch_array($result4);
                     $bangdt_ID = $row4['ID'];
                     if($count1 == 0){
-                        $sql6 = "INSERT INTO dangky_detai VALUES ('$taikhoan_ID', '$bangdt_ID',2,'$hocky','$nam')";
+                        $sql6_id = "SELECT ID FROM trangthai WHERE ten_trang_thai = 'Thực hiện'";
+                        $result6_id = mysqli_query($conn,$sql6_id);
+                        $row6_id = mysqli_fetch_array($result6_id);
+                        $sql6 = "INSERT INTO dangky_detai VALUES ('$taikhoan_ID', '$bangdt_ID','$row6_id['ID']','$hocky','$nam')";
                         $result6 = mysqli_query($conn,$sql6);
                         echo"<script>Swal.fire({
                             icon: 'info',
@@ -171,7 +174,16 @@
             $result8_id = mysqli_query($conn,$sql8_id);
             $row8_id = mysqli_fetch_array($sql8_id);
 
-            $sql9 = "INSERT INTO dangky_detai(taikhoan_id,bangdt_ID,trangthai_ID,nam_hoc,hoc_ky) VALUES ($phutrach_ID , $row7_id['ID'], $nam, $hocky)";
+            $sql9 = "SELECT ID FROM trangthai WHERE ten_trang_thai = 'Đề xuất'";
+            $result9 = mysqli_query($conn,$sql9);
+            $row9 = mysqli_fetch_array($sql9);
+            $sql10 = "INSERT INTO dangky_detai(taikhoan_id,bangdt_ID,trangthai_ID,nam_hoc,hoc_ky) VALUES ($phutrach_ID , $row7_id['ID'],  $row9['ID'], $nam, $hocky)";
+            $result10 = mysqli_query($conn,$sql10);
+            echo"<script>Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Đã đề xuất đề tài mới!',
+            })</script>";
         }
     ?>
     <div class="container">
