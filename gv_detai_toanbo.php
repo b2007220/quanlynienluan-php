@@ -10,13 +10,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Thông tin giảng viên</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+    <title>Đề tài giảng viên</title>
 </head>
 
 <body>
     <?php 
         $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        
+
         $taikhoan_ID = $_SESSION['taikhoan_ID']; 
 
         if(!isset($_SESSION['taikhoan_ID'])){
@@ -38,20 +46,46 @@
             $hocky = 3;
         }
         else $hocky = 1;
-
-        if(isset($_POST['capnhat'])){        
-            $hoten = addslashes($_POST['hoten']);
-            $nganh = addslashes($_POST['nganh']);
-            $mgv = addslashes($_POST['mgv']);
-            $gioitinh = addslashes($_POST['gioitinh']);
-
-            $sql4 = "UPDATE taikhoan SET ho_ten = '$hoten', chuyennganh_ID = '$nganh', gioitinh_ID = '$gioitinh', maTK = '$mgv'  WHERE ID= '$taikhoan_ID'";
-            $result4 = mysqli_query($conn, $sql4);
-            echo"<script>Swal.fire({
-                icon: 'info',
-                title: 'Thông báo',
-                text: 'Cập nhật thông tin thành công!',
-              })</script>";
+        if(isset($_POST['sudunglai'])){
+            $detai_loaidetai_ID = $_POST['sudunglai'];
+            $sql = "SELECT bangdt.ID 
+            FROM bangdt
+            WHERE detai_loaidetai_ID = '$detai_loaidetai_ID' AND nam_hoc = '$nam' AND hoc_ky = '$hocky'";
+            $result = mysqli_query($conn,$sql);
+            $count = mysqli_num_rows($result);
+            if($count > 0){
+                echo"<script>Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đề tài đã tồn tại ở học kỳ này!',
+                    })</script>";
+            }
+            else{
+                $sql = "INSERT INTO bangdt (detai_loaidetai_ID,nam_hoc,hoc_ky,phutrach_ID) VALUES ('$detai_loaidetai_ID', '$nam', '$hocky', '$taikhoan_ID')";
+                $result = mysqli_query($conn,$sql);
+                echo"<script>Swal.fire({
+                    icon: 'info',
+                    title: 'Thông báo',
+                    text: 'Thêm đề tài thành công!',
+                    })</script>";
+            }
+        }
+        if(isset($_POST['xem'])){
+            $_SESSION['bangdt_ID'] = $_POST['xem'];
+            $bangdt_ID = $_POST['xem'];
+            $sql = "SELECT ID FROM dangky_detai WHERE bangdt_ID = '$bangdt_ID'";
+            $result = mysqli_query($conn,$sql);
+            $count = mysqli_num_rows($result);
+            if($count > 0){
+                header('location:gv_lichsu.php');
+            }
+            else{
+                echo"<script>Swal.fire({
+                    icon: 'error',
+                    title: 'Thông báo',
+                    text: 'Không tìm thấy sinh viên nào làm đề tài  !',
+                    })</script>";
+            }
         }
     ?>
     <div class="container">
@@ -145,80 +179,64 @@
                 </div>
             </div>
             <!-- detail list-->
-            <div class="details">
-                <div class="recentOrders">  
+            <div class="detail">
+            <div class="recentOrders">
                     <div class="cardHeader">
-                        <h2>Thông tin cá nhân</h2>
+                        <h2>Đề tài</h2>
+                        <div class="button-box">
+                            <div id ="btn2"></div>
+                            <a href="gv_lichsu.php">
+                                <button type ="button" class="toggle-btn2" >Lịch sử</button>
+                            </a>
+                            <a href="gv_detai_toanbo.php">
+                                <button type ="button" class="toggle-btn1">Đề tài các năm</button>
+                            </a>
+                        </div>
                     </div>
-                    <?php
-                            $sql = "SELECT ho_ten,tenTK,chuyennganh_ID,gioitinh_ID,maTK,khoa FROM taikhoan JOIN chuyennganh ON chuyennganh_ID = chuyennganh.ID
-                            WHERE taikhoan.ID = '$taikhoan_ID'";
-                            $result = mysqli_query($conn, $sql);
-                            $row2 = mysqli_fetch_assoc($result);
-                            if($row2['khoa'] == 0){
-                                $row2['khoa'] = 42;
-                            }
-                        ?>
-                    <form action="gv_thongtin.php" method="POST">
-                        <div class="row50">
-                            <div class="input-box">
-                                <span>Họ tên</span>
-                                <input type="text" value="<?php echo $row2['ho_ten'];?>" name="hoten" autocomplete="off" required>
-                            </div>
-                            <div class="input-box">
-                                <span>Chuyên ngành</span>
-                                <select name = "nganh">
+                    <form action="gv_detai_toanbo.php" method="POST">
+                        <table id="example"  style="width:100%">
+                            <thead>
+                                <tr>
+                                    <td>Tên đề tài</td>
+                                    <td>Hình thức</td>
+                                    <td>Mô tả</td>
+                                    <td>Năm</td>
+                                    <td>Học kỳ</td>
+                                    <td>Xem lịch sử</td>
+                                    <td>Sử dụng lại</td>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <?php
-                                    $sql ="SELECT ID,tenCN FROM chuyennganh";
+                                    $sql ="SELECT bangdt.ID ,detai_loaidetai_ID,tenDT, mo_taDT,ten_loai,nam_hoc,hoc_ky FROM bangdt
+                                    JOIN detai_loaidetai on detai_loaidetai.ID = detai_loaidetai_ID
+                                    JOIN detai on detai.ID = detai_ID
+                                    JOIN loaidetai on loaidetai.ID = loaidetai_ID
+                                    WHERE phutrach_ID = '$taikhoan_ID' AND chinhthuc = 1
+                                    ORDER BY ten_loai,nam_hoc,hoc_ky";
                                     $result = mysqli_query($conn, $sql);
-                                    while( $row = mysqli_fetch_assoc($result)){
-                                        if($row['ID'] == $row2['chuyennganh_ID']){
-                                            echo '<option value="'.$row['ID'].'" selected>'. $row['tenCN'] .'</option>';
-                                        }
-                                        else{
-                                            echo '<option value="'.$row['ID'].'">'. $row['tenCN'] .'</option>';
-                                        }
-                                    }
+                                    while($row = mysqli_fetch_assoc($result)){
                                 ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row50">
-                            <div class="input-box">
-                                <span>Email</span>
-                                <input type="email" name="email" readonly value="<?php echo $row2['tenTK'];?>" required></input>
-                            </div>
-                            <div class="input-box">
-                                <span>MGV</span>
-                                <input type="text" name="mgv" value="<?php echo $row2['maTK'];?>" required autocomplete="off"></input>
-                            </div>
-                        </div>
-                        <div class="row25">
-                            <div class="input-box">
-                                <span>Giới tính</span>
-                                <select name="gioitinh">
-                                <?php
-                                    $sql ="SELECT ID,tenGT FROM gioitinh";
-                                    $result = mysqli_query($conn, $sql);
-                                    while( $row = mysqli_fetch_assoc($result)){
-                                        if($row['ID'] == $row2['gioitinh_ID']){
-                                            echo '<option value="'.$row['ID'].'" selected>'. $row['tenGT'] .'</option>';
-                                        }
-                                        else{
-                                            echo '<option value="'.$row['ID'].'">'. $row['tenGT'] .'</option>';
-                                        }
-                                    }
+                                <tr>
+                                    <td><?php echo $row['tenDT']; ?></td>
+                                    <td><?php echo $row['ten_loai']; ?></td>
+                                    <td><?php echo $row['mo_taDT']; ?></td>
+                                    <td><?php echo $row['nam_hoc']; ?></td>
+                                    <td><?php echo $row['hoc_ky']; ?></td>
+                                    <td><button class="btn" name="xem" value="<?php echo $row["ID"]; ?>">
+                                        <ion-icon name="eye-outline"></ion-icon>
+                                        </button></td>
+                                    <td><button class="btn" name="sudunglai" value="<?php echo $row["detai_loaidetai_ID"]; ?>">
+                                        <ion-icon name="checkmark-outline"></ion-icon>
+                                        </button></td>
+                                </tr>
+                                <?php }
                                 ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row100">
-                            <div class="input-box">
-                                <input type="submit" name="capnhat" value="Cập nhật">
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
+
                     </form>
-                </div>
+                </div>  
             </div>
         </div>
     </div>
@@ -244,6 +262,7 @@
     }
     list.forEach((item) =>
         item.addEventListener('mouseover', activeLink));
+
     </script>
 </body>
 

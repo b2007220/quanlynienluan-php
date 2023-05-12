@@ -27,7 +27,7 @@
         header('location:gv_nlcoso.php');
         }
         if($_SESSION['vai_tro'] == 0){
-        header('location:ad_ql_gv.php');
+        header('location:ad_ql_tk.php');
         }
         $today = date("Y-m-d");
         $new_date = date('Y-m-d', strtotime($today. ' + 2 weeks'));
@@ -43,7 +43,7 @@
     ?>
     <?php
         if(isset($_POST['them'])){
-            $sql1 = "SELECT ID,ten_trang_thai
+            $sql1 = "SELECT dangky_detai.ID,ten_trang_thai
             FROM dangky_detai JOIN trangthai ON trangthai.ID = trangthai_ID 
             WHERE taikhoan_ID = '$taikhoan_ID' AND nam_hoc = '$nam' AND hoc_ky = '$hocky'";
             $result1 = mysqli_query($conn, $sql1);
@@ -56,11 +56,18 @@
                   })</script>";
             }
             else{
-                if($row1['ten_trang_thai'] == 'Đề xuất'){
+                if($row1['ten_trang_thai'] == 'Đề xuất' || $row1['ten_trang_thai'] == 'Chờ duyệt' ){
                     echo"<script>Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
                         text: 'Vui lòng đợi phản hồi của giáo viên!',
+                      })</script>";
+                }
+                else if($row1['ten_trang_thai'] == 'Hoàn thành'){
+                    echo"<script>Swal.fire({
+                        icon: 'info',
+                        title: 'Thông báo',
+                        text: 'Bạn đã hoàn thành niên luận!',
                       })</script>";
                 }
                 else{

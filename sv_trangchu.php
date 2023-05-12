@@ -10,6 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
     <title>Trang chủ</title>
 </head>
 <body>
@@ -26,7 +34,7 @@
         header('location:gv_nlcoso.php');
     }
     if($_SESSION['vai_tro'] == 0){
-        header('location:ad_ql_gv.php');
+        header('location:ad_ql_tk.php');
     }
     $month = date("m");
     $nam =  date("Y");
@@ -140,7 +148,7 @@
                             }
                         ?>
                     </div>
-                    <table>
+                    <table id="example"  style="width:100%">
                         <thead>
                             <tr>
                                 <td>Ngày báo cáo</td>
@@ -180,13 +188,16 @@
                             if($count != 0){
                                 $row = mysqli_fetch_assoc($result);
                                 if($row['ten_trang_thai'] == 'Đề xuất'){
-                                    echo '<div class=\"status wait\"><span>Đề xuất</span></div>';
+                                    echo '<span class="status wait">Đề xuất</span>';
                                 }
                                 else if($row['ten_trang_thai'] == 'Thực hiện'){
-                                    echo '<div class=\"status process\"><span>Thực hiện</span></div>';
+                                    echo '<span class="status process">Thực hiện</span>';
                                 }
                                 else if($row['ten_trang_thai'] == 'Hoàn thành'){
-                                    echo '<div class=\"status finish\"><span>Thực hiện</span></div>';
+                                    echo '<span class="status finish">Hoàn thành</span>';
+                                }
+                                else if($row['ten_trang_thai'] == 'Chờ duyệt'){
+                                    echo '<span class="status request">Chờ duyệt</span>';
                                 }
                             }
                         ?>

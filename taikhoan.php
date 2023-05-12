@@ -25,7 +25,7 @@
                 header('location:gv_nlcoso.php');
             }
             else if($_SESSION['vai_tro'] == 0){
-                header('location:ad_ql_gv.php');
+                header('location:ad_ql_tk.php');
             }
 
         }

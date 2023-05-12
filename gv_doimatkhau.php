@@ -14,45 +14,65 @@
 </head>
 <body>
     <?php 
-         if(!isset($_SESSION['taikhoan'])){
-            header('location:dangnhap.php');
-        }
-        if($_SESSION['loai'] == 1){
-            header('location:sv_trangchu.php');
-        }
-        if($_SESSION['loai'] == 0){
-            header('location:ad_ql_gv.php');
-        }
+         $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
+        
+         $taikhoan_ID = $_SESSION['taikhoan_ID']; 
+ 
+         if(!isset($_SESSION['taikhoan_ID'])){
+             header('location:dangnhap.php');
+         }
+         if($_SESSION['vai_tro'] == 1){
+             header('location:sv_trangchu.php');
+         }
+         if($_SESSION['vai_tro'] == 0){
+             header('location:ad_ql_tk.php');
+         }
+ 
+         $month = date("m");
+         $nam =  date("Y");
+         if($month >= 1 && $month <=5){
+             $hocky = 2;
+         }
+         else if($month >= 6  && $month <=7){
+             $hocky = 3;
+         }
+         else $hocky = 1;
 
-        $conn = mysqli_connect("localhost", "root", "", "nienluan");
-        $matk = $_SESSION['matk'];    
-    ?>
-    <?php
         if(isset($_POST['doi'])){
-            $sql = "SELECT matkhau FROM taikhoan where matk = '$matk'";
+            $sql = "SELECT mat_khau FROM taikhoan where ID = '$taikhoan_ID'";
             $result = mysqli_query($conn, $sql);
             $row = mysqli_fetch_array($result);
 
-            $mkcu = addslashes($_POST['mkcu']);
-            $mkmoi = addslashes($_POST['mkmoi']);
-            $mkxn = addslashes($_POST['mkxn']);
+            $mkcu = md5(addslashes($_POST['mkcu']));
+            $mkmoi = md5(addslashes($_POST['mkmoi']));
+            $mkxn = md5(addslashes($_POST['mkxn']));
 
-            if($row['matkhau' == $mkcu]){
+            if(strcmp($row['mat_khau'],$mkcu) == 0){
                 if($mkmoi == $mkxn){
-                    $sql = "UPDATE taikhoan SET matkhau = '$mkxn' WHERE matk = '$matk'";
-                    $result = mysqli_query($conn, $sql);
-                    echo"<script>Swal.fire({
-                        icon: 'info',
-                        title: 'Thông báo',
-                        text: 'Đổi mật khẩu thành công!',
-                      })</script>";
+                    if(strcmp($row['mat_khau'],$mkmoi) == 0){
+                        echo"<script>Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Mật khẩu mới và mật khẩu cũ trùng nhau!',
+                          })</script>";
+                    }
+                    else{
+                        $mkxn = md5($mkxn);
+                        $sql = "UPDATE taikhoan SET mat_khau = '$mkxn' WHERE ID = '$taikhoan_ID'";
+                        $result = mysqli_query($conn, $sql);
+                        echo"<script>Swal.fire({
+                            icon: 'info',
+                            title: 'Thông báo',
+                            text: 'Đổi mật khẩu thành công!',
+                            })</script>";
+                    }
                 }
                 else{
                     echo"<script>Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
                         text: 'Mật khẩu mới và xác nhận không khớp!',
-                      })</script>";
+                        })</script>";
                 }
             }
             else{
@@ -81,19 +101,12 @@
                             <ion-icon name="home-outline"></ion-icon>
 
                         </span>
-                        <span class="title">Niên luận cơ sở</span>
+                        <span class="title">Niên luận học kỳ</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="gv_nlnganh.php">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-                        </span>
-                        <span class="title">Niên luận ngành</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_detai.php">
+                    <a href="gv_detai_hientai.php">
                         <span class="icon">
                             <ion-icon name="newspaper-outline"></ion-icon>
                         </span>
@@ -101,11 +114,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="gv_qldetai.php">
+                    <a href="gv_lichsu.php">
                         <span class="icon">
-                            <ion-icon name="clipboard-outline"></ion-icon>
+                            <ion-icon name="today-outline"></ion-icon>
                         </span>
-                        <span class="title">Quản lí đề tài</span>
+                        <span class="title">Lịch sử báo cáo</span>
                     </a>
                 </li>
                 <li>
@@ -142,7 +155,7 @@
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
                 <div class="username">
-                <?php
+                    <?php
                         $sql = "SELECT ho_ten, gioitinh_id,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);
@@ -167,7 +180,7 @@
                     <div class="cardHeader">
                         <h2>Đổi mật khẩu</h2>
                     </div>  
-                    <form action="sv_doimatkhau.php" method ="POST">
+                    <form action="gv_doimatkhau.php" method ="POST">
                     <div class="row50">
                             <div class="input-box">
                                 <span>Mật khẩu cũ</span>
@@ -182,7 +195,7 @@
                    </div>
                    <div class="row50">
                             <div class="input-box">
-                                <span>Xác nhận một khẩu mới</span>
+                                <span>Xác nhận mật khẩu mới</span>
                                 <input type="password" value="" name="mkxn" required>
                             </div>
                    </div>

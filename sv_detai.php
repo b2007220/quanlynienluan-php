@@ -3,16 +3,22 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
     <title>Đề tài sinh viên</title>
 </head>
-
 <body>
     <?php 
         $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
@@ -27,7 +33,7 @@
             header('location:gv_nlcoso.php');
         }
         if($_SESSION['vai_tro'] == 0){
-            header('location:ad_ql_gv.php');
+            header('location:ad_ql_tk.php');
         }
         $month = date("m");
         $nam =  date("Y");
@@ -42,12 +48,30 @@
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($result);
         $chuyennganh_ID = $row['chuyennganh_ID'];
-        
+        $sql = "SELECT ID FROM loaidetai WHERE ten_loai = 'Niên luận cơ sở'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_array($result);
+        $nlcs_ID = $row['ID'];
+        $sql = "SELECT ID FROM loaidetai WHERE ten_loai = 'Niên luận ngành'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_array($result);
+        $nln_ID = $row['ID'];
+
         $hinhthuc = '';
         $phutrach_ID ='';
 
+        $sql = "SELECT ID FROM trangthai WHERE ten_trang_thai = 'Đề xuất'";
+        $result = mysqli_query($conn,$sql);
+        $row_id = mysqli_fetch_array($result);
+        $de_xuat_id= $row_id['ID'];
+
+        $sql = "SELECT ID FROM trangthai WHERE ten_trang_thai = 'Chờ duyệt'";
+        $result = mysqli_query($conn,$sql);
+        $row_id = mysqli_fetch_array($result);
+        $cho_duyet_id= $row_id['ID'];
+
         //tìm id giảng viên và hình thức
-        $sql1 = "SELECT phutrach_ID, loaidetai_ID,dangky_detai.ID
+        $sql1 = "SELECT phutrach_ID, loaidetai_ID,bangdt.ID
         FROM bangdt JOIN dangky_detai ON bangdt_ID = bangdt.ID
         JOIN detai_loaidetai ON detai_loaidetai_ID = detai_loaidetai.ID
         WHERE taikhoan_ID = '$taikhoan_ID' and dangky_detai.nam_hoc = '$nam' and dangky_detai.hoc_ky = '$hocky'";
@@ -97,59 +121,39 @@
                     text: 'Bạn đã đăng kí đề tài năm nay!',
                 })</script>";
             }
+        }
 
-        }    
         if(isset($_POST['dangki'])){
             if(isset($_SESSION['phutrach_ID'])){
-                if($_POST['detai'] == 1){
-                    $phutrach_ID = $_SESSION['phutrach_ID'];
-                    $tenDT = addslashes($_POST['detai']);
-                    // lấy ID đề tài năm nay
-                    $sql4 = "SELECT bangdt.ID
-                    FROM detai JOIN detai_loaidetai ON detai.ID = detai_ID
-                    JOIN bangdt ON detai_loaidetai.ID = detai_loaidetai_ID
-                    WHERE tenDT = '$tenDT' AND bangdt.nam_hoc = '$nam' AND bangdt.hoc_ky = '$hocky' AND phutrach_ID = '$phutrach_ID'";
-                    $result4 = mysqli_query($conn,$sql4);
-                    $count4 = mysqli_num_rows($result4);
-                    if($count4 != 0){
-                        $row4 = mysqli_fetch_array($result4);
-                        $bangdt_ID = $row4['ID'];
-                        if($count1 == 0){
-                            $sql6_id = "SELECT ID FROM trangthai WHERE ten_trang_thai = 'Thực hiện'";
-                            $result6_id = mysqli_query($conn,$sql6_id);
-                            $row6_id = mysqli_fetch_array($result6_id);
-                            $trang_thai_id= $row6_id['ID'];
-                            $sql6 = "INSERT INTO dangky_detai VALUES ('$taikhoan_ID', '$bangdt_ID', $trang_thai_id ,'$hocky','$nam')";
-                            $result6 = mysqli_query($conn,$sql6);
-                            echo"<script>Swal.fire({
-                                icon: 'info',
-                                title: 'Thông báo',
-                                text: 'Đăng kí đề tài thành công!',
+                $phutrach_ID = $_SESSION['phutrach_ID'];
+                $bangdt_ID = addslashes($_POST['bangdt_ID']);
+                if($bangdt_ID != 0){
+                    if($count1 == 0){
+                        $sql6 = "INSERT INTO dangky_detai(taikhoan_ID, bangdt_ID, trangthai_Id, hoc_ky, nam_hoc)  VALUES ('$taikhoan_ID', '$bangdt_ID', '$cho_duyet_id' ,'$hocky','$nam')";
+                        $result6 = mysqli_query($conn,$sql6);
+                        echo"<script>Swal.fire({
+                            icon: 'info',
+                            title: 'Thông báo',
+                            text: 'Đăng ký đề tài thành công!',
+                            confirmButtonText: 'Xác nhận',
                             })</script>";
-                        }
-                        else{
-                            $sql5 = "UPDATE dangky_detai SET bangdt_ID = '$bangdt_ID' WHERE taikhoan_ID = '$taikhoan_ID' AND nam_hoc = '$nam' AND hoc_ky = '$hocky'";
-                            $result5 = mysqli_query($conn,$sql5);
-                            echo"<script>Swal.fire({
-                                icon: 'info',
-                                title: 'Thông báo',
-                                text: 'Cập nhật đề tài thành công!',
-                            })</script>";
-                        }
                     }
                     else{
+                        $sql5 = "UPDATE dangky_detai SET bangdt_ID = '$bangdt_ID', trangthai_ID = $cho_duyet_id  WHERE taikhoan_ID = '$taikhoan_ID' AND nam_hoc = '$nam' AND hoc_ky = '$hocky'";
+                        $result5 = mysqli_query($conn,$sql5);
                         echo"<script>Swal.fire({
-                            icon: 'error',
-                            title: 'Lỗi',
-                            text: 'Không tìm thấy đề tài của giảng viên!',
-                        })</script>";
+                            icon: 'info',
+                            title: 'Thông báo',
+                            text: 'Chỉnh sửa đề tài thành công!',
+                            confirmButtonText: 'Xác nhận',
+                            })</script>"; 
                     }
                 }
                 else{
                     echo"<script>Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
-                        text: 'Không tìm thấy đề tài của giảng viên!',
+                        text: 'Vui lòng chọn đề tài!',
                     })</script>";
                 }
             }
@@ -161,7 +165,7 @@
                 })</script>";
             }
         }
-        if(isset($_POST['dexuat'])){
+        if(isset($_POST['dexuat'])){  
             if(isset($_SESSION['phutrach_ID'])){
                 $ten_dexuat = addslashes($_POST['dtmoi']);
                 $mota_dexuat = addslashes($_POST['mota_dexuat']);
@@ -175,7 +179,7 @@
                 $row6_id = mysqli_fetch_array($result6_id);
                 $de_tai_id =$row6_id['ID'];
     
-                $sql7 = "INSERT INTO detai_loaidetai(detai_ID,loaidetai_ID) VALUES ($de_tai_id, $hinhthuc)";
+                $sql7 = "INSERT INTO detai_loaidetai(detai_ID,loaidetai_ID,chinhthuc) VALUES ($de_tai_id, $hinhthuc,0)";
                 $result7 = mysqli_query($conn,$sql7);
                 $sql7_id = "SELECT ID FROM detai_loaidetai WHERE detai_ID = $de_tai_id AND loaidetai_ID = $hinhthuc";
                 $result7_id = mysqli_query($conn,$sql7_id);
@@ -188,18 +192,26 @@
                 $result8_id = mysqli_query($conn,$sql8_id);
                 $row8_id = mysqli_fetch_array($result8_id);
                 $bangdt_ID = $row8_id['ID'];
-    
-                $sql9 = "SELECT ID FROM trangthai WHERE ten_trang_thai = 'Đề xuất'";
-                $result9 = mysqli_query($conn,$sql9);
-                $row9 = mysqli_fetch_array($result9);
-                $trang_thai_id = $row9['ID'];
-                $sql10 = "INSERT INTO dangky_detai(taikhoan_id,bangdt_ID,trangthai_ID,nam_hoc,hoc_ky) VALUES ($taikhoan_ID , $bangdt_ID,  $trang_thai_id, $nam, $hocky)";
-                $result10 = mysqli_query($conn,$sql10);
-                echo"<script>Swal.fire({
-                    icon: 'info',
-                    title: 'Thông báo',
-                    text: 'Đã đề xuất đề tài mới!',
-                })</script>";
+                if($count1 == 0){
+                    $sql10 = "INSERT INTO dangky_detai(taikhoan_id,bangdt_ID,trangthai_ID,nam_hoc,hoc_ky) VALUES ($taikhoan_ID , $bangdt_ID,  $de_xuat_id, $nam, $hocky)";
+                    $result10 = mysqli_query($conn,$sql10);
+                    echo"<script>Swal.fire({
+                        icon: 'info',
+                        title: 'Thông báo',
+                        text: 'Đã đề xuất đề tài mới!',
+                        confirmButtonText: 'Xác nhận',
+                      })</script>"; 
+                }
+                else{
+                    $sql10 = "UPDATE dangky_detai SET bangdt_ID = '$bangdt_ID', trangthai_ID = $cho_duyet_id WHERE taikhoan_ID = '$taikhoan_ID' AND nam_hoc = '$nam' AND hoc_ky = '$hocky'";
+                    $result10 = mysqli_query($conn,$sql10);
+                    echo"<script>Swal.fire({
+                        icon: 'info',
+                        title: 'Thông báo',
+                        text: 'Đã đề xuất đề tài mới!',
+                        confirmButtonText: 'Xác nhận',
+                      })</script>"; 
+                }
             }
             else echo"<script>Swal.fire({
                 icon: 'error',
@@ -330,11 +342,11 @@
                                 <span>Học kì này bạn làm niên luận gì</span>
                                 <div class="radio-group">
                                     <label class="radio">
-                                        <input type="radio" name="type" value="1">Niên luận cơ sở
+                                        <input type="radio" name="type" value="<?php echo $nlcs_ID ?>">Niên luận cơ sở
                                         <span></span>
                                     </label>
                                     <label class="radio">
-                                        <input type="radio" name="type" value="2"> Niên luận ngành
+                                        <input type="radio" name="type" value="<?php echo $nln_ID ?>"> Niên luận ngành
                                         <span></span>
                                     </label>
                                 </div>
@@ -345,27 +357,28 @@
                                 <input type="submit" name="xacnhan" value="Xác nhận">
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                     <div class="cardHeader">
                         <h2>Đăng kí đề tài</h2>
                     </div>
-                    <form action="sv_detai.php" method="POST">
                         <div class="row100">
                             <div class="input-box">
                                 <span>Tên đề tài</span>
-                                <select name="detai">
+                                <select name= "bangdt_ID">
+                                    <option value ="0"></option>
                                     <?php
+                                    $phutrach_ID = $_SESSION['phutrach_ID'];
                                     $sql ="SELECT tenDT,bangdt.ID 
                                         FROM detai JOIN detai_loaidetai ON detai_ID = detai.ID 
                                         JOIN bangdt ON detai_loaidetai_ID =detai_loaidetai.ID
-                                        WHERE phutrach_ID = '$phutrach_ID' and bangdt.nam_hoc = '$nam' and bangdt.hoc_ky = '$hocky' and loaidetai_ID = '$hinhthuc'";
+                                        WHERE phutrach_ID = '$phutrach_ID' AND chinhthuc = 1  AND bangdt.nam_hoc = '$nam' AND bangdt.hoc_ky = '$hocky' AND loaidetai_ID = '$hinhthuc'";
                                     $result = mysqli_query($conn, $sql);
                                     while( $row = mysqli_fetch_assoc($result)){    
-                                        if($row['bangdt.ID'] == $row1['dangky_detai.ID']){
-                                            echo '<option value="'.$row['bangdt.ID'].'" selected>'. $row['tenDT'] .'</option>';
+                                        if($row['ID'] == $row1['ID']){
+                                            echo '<option value="'.$row['ID'].'" selected>'. $row['tenDT'] .'</option>';
                                         }
                                         else{
-                                            echo '<option value="'.$row['bangdt.ID'].'">'. $row['tenDT'] .'</option>';
+                                            echo '<option value="'.$row['ID'].'">'. $row['tenDT'] .'</option>';
                                         }
                                     }
                                     ?>
@@ -405,7 +418,7 @@
                     <div class="cardHeader">
                         <h2>Bảng đề tài</h2>
                     </div>
-                    <table>
+                    <table id="example"  style="width:100%">
                         <thead>
                             <tr>
                                 <td>Tên</td>
@@ -413,12 +426,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                if($hinhthuc != '' && $phutrach_ID !=''){
+                            <?php      
+                            if($hinhthuc != '' && $phutrach_ID !=''){                              
                                     $sql = "SELECT tenDT, mo_taDT
                                     FROM bangdt JOIN detai_loaidetai ON detai_loaidetai.ID = detai_loaidetai_ID
                                     JOIN detai ON detai.ID = detai_ID
-                                    WHERE phutrach_ID = '$phutrach_ID' AND loaidetai_ID = '$hinhthuc' AND hoc_ky = '$hocky' AND nam_hoc = '$nam'";
+                                    WHERE phutrach_ID = '$phutrach_ID' AND chinhthuc = 1 AND loaidetai_ID = '$hinhthuc' AND hoc_ky = '$hocky' AND nam_hoc = '$nam'";
                                     $result = mysqli_query($conn,$sql);
                                     while($row = mysqli_fetch_assoc($result)){           
                             ?>

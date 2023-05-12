@@ -4,6 +4,11 @@
     box-sizing: border-box;
     font-family: sans-serif;
 }
+a:-webkit-any-link {
+    color: transparent;
+    cursor: pointer;
+    text-decoration: underline;
+}
 :root{
     --white: #fff;
     --darkblue: #243b55;
@@ -21,7 +26,7 @@ body{
 }
 .navigation{
     position: fixed;
-    width: 300px;
+    width: 270px;
     height: 100%;
     background-color: var( --darkblue);
     border-left: 10px solid var(--darkblue);
@@ -115,8 +120,8 @@ body{
 /*main*/
 .main {
     position: absolute;
-    width: calc(100% - 300px);
-    left: 300px;
+    width: calc(100% - 250px);
+    left: 250px;
     min-height: 100vh;
     background: var(--white);
     transition: 0.5s;
@@ -148,6 +153,13 @@ body{
     font-size: 2.5em;
     cursor: pointer;
 }
+.detail {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    margin-top: 10px;
+}
 .details {
     position: relative;
     width: 100%;
@@ -157,7 +169,7 @@ body{
     grid-gap: 30px;
     margin-top: 10px;
 }
-.details .recentOrders {
+.recentOrders {
     position: relative;
     min-height: 200px;
     background: var(--white);
@@ -166,11 +178,11 @@ body{
     border-radius: 20px;
 }
 
-.details .recentOrders .row50{
+.recentOrders .row50{
     display: flex;
     gap: 20px;
 }
-.details .recentOrders .row25{
+.recentOrders .row25{
     display: flex;
     gap: 20px;
     justify-content: start;
@@ -181,13 +193,13 @@ body{
     margin-bottom: 10px;
     width: 50%;
 }
-.details .recentOrders .row100 .input-box{
+ .recentOrders .row100 .input-box{
     width: 100%;
 }
-.details .recentOrders .row25 .input-box{
+ .recentOrders .row25 .input-box{
     width: 25%;
 }
-.details .recentOrders .row100 .input-box textarea{
+ .recentOrders .row100 .input-box textarea{
     resize: none;
     padding: 10px;
     border-radius: 12px;
@@ -208,19 +220,22 @@ body{
     border-radius: 12px;
     margin-bottom: 10px;
 }
-
-.details .recentOrders table td:last-child .btn{
+ .recentOrders table td{
+    max-width: 500px;
+    min-width: 95px;
+}
+ .recentOrders table td .btn{
     border: none;
     background: transparent;
     font-size: 1.5em; 
 }
-.details .recentOrders table td:last-child .btn:hover {
+.recentOrders table td .btn:hover {
     background: transparent;
     color: var(--white);
     font-size: 1.5em; 
 
 }
-.details .recentOrders .row100 .input-box #dsdetai option{
+.recentOrders .row100 .input-box #dsdetai option{
     color: var(--black1);
 }
 .input-box input[type="submit"]{
@@ -294,10 +309,11 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    padding-bottom: 20px;
 }
 .cardHeader h2{
-    font-weight: 500;
-    color: var(--darkblue);
+    font-weight: 600;
+    color: var(--darkblue);   
 }
 .cardHeader .detai{
     text-decoration: none;
@@ -310,70 +326,104 @@ body{
     color: var(--white);
     border-radius: 12px;
 }
-.cardHeader .status{
-    font-weight: 500;   
+.status{
+    font-size: 1em;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--white);
+    border-radius: 12px; 
+    position: relative;
+    padding: 5px 10px;  
+    border: none;
 }
-.cardHeader .status.wait{
-    color : #f00;
+.status.wait{
+    background : rgb(215, 36, 36);
 }
-.cardHeader .status.wait{
-    color : #f9ca3f;
+.status.process{
+    background : #f39c12;
 }
-.cardHeader .status.wait{
-    color : #8de02c;
+.status.finish{
+    background : #27ae60;
 }
-.details table{
+.status.request{
+    background : #126DA6;
+}
+
+table{
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 }
-.details table thead td{
-    font-weight: 500;
+ table thead td{
+    font-weight: 600;
 }
 
-.details .recentOrders table tr{
+.recentOrders table tr{
     color: var(--black1);
     border-bottom: 1px solid rgba(0,0,0,0.1);
 }
-.details .recentOrders table tr:hover{
+.recentOrders table tr:hover{
     background: var(--darkblue);
     color: var(--white);
 }
-.details .recentOrders table tr:last-child{
+.recentOrders table tr:last-child{
     border-bottom: none;
 }
-.details .recentOrders table tr td{
+.recentOrders table tr td{
     padding: 10px;
+    text-align: start;
 }
-.details .recentOrders form{
+.recentOrders form{
     position: relative;
 }
-.wrapper{
-    margin-top: 5px;
-    position: absolute;
-    right: 0;
+.swal2-textarea, .swal2-input {
+    min-width: 350px;
+    resize: none;
+}
+.swal2-textarea{
+    height: 15em;
+}
+.cardHeader .button-box{
+    width: auto;
+    position: relative;
     display: flex;
-    height: 32px;
-    width: 120px;
-    border-radius: 12px;
-    align-items: center;
-    justify-content: center;
-    background: var(--blue);
+    border: 1px solid #03e9f4;
+    border-radius: 30px;
 }
-.wrapper a{
-    width: 100%;
-    text-align: center;
-    color: var(--white);
-    font-size: 1.5em;
-    font-weight: 600;
+.cardHeader .button-box a .toggle-btn1,
+.cardHeader .button-box a .toggle-btn2{
+    position: relative;
+    padding: 10px 80px;
     cursor: pointer;
-    text-decoration: none;
+    background: transparent;
+    border: 0;
+    outline: none;
+    font-size: 16px;
 }
-.wrapper  a.num{
-    border-right: 1px solid var(--black2);
-    border-left: 1px solid var(--black2);
-    pointer-events: none;
+.cardHeader .button-box a .toggle-btn1{
+    color: #fff;
 }
+
+.cardHeader .button-box a .toggle-btn2{
+    color: var(--darkblue);
+    font-weight: 550;
+}
+.cardHeader .button-box #btn1,
+.cardHeader .button-box #btn2{
+    top: 0px; 
+    width: 55%;
+    height: 100%;
+    position: absolute;
+    background: #126DA6;
+    border-radius: 30px;
+}
+.cardHeader .button-box #btn1{
+    left: 0;
+}
+.cardHeader .button-box #btn2{
+    left: 45%;
+}
+
 @media(max-width:991px){
     .navigation{
         left: -300px;
@@ -404,6 +454,11 @@ body{
     }
     .input-box{
         width: 100%;
+    }
+    .recentOrders .cardHeader{
+        display: flex;
+        flex-direction: columns;
+        gap: 0;
     }
 }
 @media(max-width:768){

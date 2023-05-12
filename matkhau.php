@@ -24,7 +24,7 @@
                 header('location:gv_nlcoso.php');
             }
             else if($_SESSION['vai_tro'] == 0){
-                header('location:ad_ql_gv.php');
+                header('location:ad_ql_tk.php');
             }
         }
         if(!isset($_SESSION['demo_tai_khoan'])){
@@ -43,7 +43,7 @@
                 else{
                     $vai_tro = 2;
                 }
-                $matkhau = ($matkhau);
+                $matkhau = md5($matkhau);
                 $sql2 = "INSERT INTO taikhoan(tenTK,mat_khau,trang_thaiTK,chuyennganh_ID,vai_tro,gioitinh_ID) VALUES ('$demo_taikhoan','$matkhau', 1,1, $vai_tro,1)";
                 $result2 = mysqli_query($conn, $sql2);
                 $sql3 = "SELECT ID FROM taikhoan WHERE tenTK = '$demo_taikhoan'";

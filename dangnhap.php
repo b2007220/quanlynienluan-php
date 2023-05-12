@@ -24,14 +24,14 @@
                 header('location:gv_nlcoso.php');
             }
             else if($_SESSION['vai_tro'] == 0){
-                header('location:ad_ql_gv.php');
+                header('location:ad_ql_tk.php');
             }
         }
 
         
         if(isset($_POST['dangnhap'])){
             $taikhoan = addslashes($_POST['taikhoan']);
-            $matkhau = (addslashes($_POST['matkhau']));
+            $matkhau = md5(addslashes($_POST['matkhau']));
             $sql = "SELECT ID,tenTK,mat_khau,vai_tro,trang_thaiTK FROM taikhoan WHERE tenTK = '$taikhoan'";
             $result = mysqli_query($conn, $sql);
             $row = mysqli_fetch_assoc($result);

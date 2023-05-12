@@ -3,7 +3,6 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +25,7 @@
             header('location:gv_nlcoso.php');
         }
         if($_SESSION['vai_tro'] == 0){
-            header('location:ad_ql_gv.php');
+            header('location:ad_ql_tk.php');
         }
         $month = date("m");
         $nam =  date("Y");
@@ -39,31 +38,39 @@
         else $hocky = 1;
         
         if(isset($_POST['doi'])){
-            $sql = "SELECT matkhau FROM taikhoan where ID = '$taikhoan_ID'";
+            $sql = "SELECT mat_khau FROM taikhoan where ID = '$taikhoan_ID'";
             $result = mysqli_query($conn, $sql);
             $row = mysqli_fetch_array($result);
 
             $mkcu = md5(addslashes($_POST['mkcu']));
-            $mkmoi = addslashes($_POST['mkmoi']);
-            $mkxn = addslashes($_POST['mkxn']);
+            $mkmoi = md5(addslashes($_POST['mkmoi']));
+            $mkxn = md5(addslashes($_POST['mkxn']));
 
-            if(strcmp($row['matkhau'],$mkcu) == 0){
+            if(strcmp($row['mat_khau'],$mkcu) == 0){
                 if($mkmoi == $mkxn){
-                    $mkxn = md5($mkxn);
-                    $sql = "UPDATE taikhoan SET mat_khau = '$mkxn' WHERE ID = '$taikhoan_ID'";
-                    $result = mysqli_query($conn, $sql);
-                    echo"<script>Swal.fire({
-                        icon: 'info',
-                        title: 'Thông báo',
-                        text: 'Đổi mật khẩu thành công!',
-                      })</script>";
+                    if(strcmp($row['mat_khau'],$mkmoi) == 0){
+                        echo"<script>Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Mật khẩu mới và mật khẩu cũ trùng nhau!',
+                          })</script>";
+                    }
+                    else{
+                        $sql = "UPDATE taikhoan SET mat_khau = '$mkxn' WHERE ID = '$taikhoan_ID'";
+                        $result = mysqli_query($conn, $sql);
+                        echo"<script>Swal.fire({
+                            icon: 'info',
+                            title: 'Thông báo',
+                            text: 'Đổi mật khẩu thành công!',
+                            })</script>";
+                    }
                 }
                 else{
                     echo"<script>Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
                         text: 'Mật khẩu mới và xác nhận không khớp!',
-                      })</script>";
+                        })</script>";
                 }
             }
             else{
@@ -178,7 +185,7 @@
                    </div>
                    <div class="row50">
                             <div class="input-box">
-                                <span>Xác nhận một khẩu mới</span>
+                                <span>Xác nhận mật khẩu mới</span>
                                 <input type="password" value="" name="mkxn" required>
                             </div>
                    </div>
