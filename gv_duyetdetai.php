@@ -26,7 +26,7 @@
 <body>
     <?php 
         $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        
+        $conn -> set_charset("utf8");
         $taikhoan_ID = $_SESSION['taikhoan_ID']; 
 
         if(!isset($_SESSION['taikhoan_ID'])){

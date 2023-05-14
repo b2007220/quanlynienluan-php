@@ -24,7 +24,7 @@
 <body>
     <?php 
         $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-
+        $conn -> set_charset("utf8");
         if(!isset($_SESSION['taikhoan_ID'])){
             header('location:dangnhap.php');
         }

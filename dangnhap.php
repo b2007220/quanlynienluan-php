@@ -15,6 +15,7 @@
 <body?>
     <?php
         $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
+        $conn -> set_charset("utf8");
         
         if(isset($_SESSION['taikhoan_ID'])){
             if($_SESSION['vai_tro'] == 1 ){
