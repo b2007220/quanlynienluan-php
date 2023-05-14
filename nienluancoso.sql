@@ -2,463 +2,431 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 12, 2023 at 01:02 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th5 14, 2023 lúc 03:09 PM
+-- Phiên bản máy phục vụ: 10.4.27-MariaDB
+-- Phiên bản PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
 START TRANSACTION;
+SET time_zone = "+00:00";
 
-SET TIME_ZONE = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `nienluancoso`
+-- Cơ sở dữ liệu: `nienluancoso`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bangdt`
+-- Cấu trúc bảng cho bảng `bangdt`
 --
 
-CREATE TABLE `BANGDT` (
-  `ID` INT(11) NOT NULL,
-  `PHUTRACH_ID` INT(11) NOT NULL,
-  `DETAI_LOAIDETAI_ID` INT(11) NOT NULL,
-  `HOC_KY` INT(11) NOT NULL,
-  `NAM_HOC` INT(11) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `bangdt` (
+  `ID` int(11) NOT NULL,
+  `phutrach_ID` int(11) NOT NULL,
+  `detai_loaidetai_ID` int(11) NOT NULL,
+  `hoc_ky` int(11) NOT NULL,
+  `nam_hoc` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `bangdt`
+-- Đang đổ dữ liệu cho bảng `bangdt`
 --
 
--- --------------------------------------------------------
-
---
--- Table structure for table `baocao`
---
-
-CREATE TABLE `BAOCAO` (
-  `ID` INT(11) NOT NULL,
-  `DANGKY_DETAI_ID` INT(11) NOT NULL,
-  `NGAY_BAO_CAO` DATE NOT NULL,
-  `ND_THUC_HIEN` VARCHAR(255) NOT NULL,
-  `ND_SAP_TOI` VARCHAR(255) NOT NULL,
-  `THOI_HAN` DATE NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
-
---
--- Dumping data for table `baocao`
---
-
-
+INSERT INTO `bangdt` (`ID`, `phutrach_ID`, `detai_loaidetai_ID`, `hoc_ky`, `nam_hoc`) VALUES
+(4, 28, 44, 2, 2023),
+(5, 28, 45, 2, 2023),
+(6, 28, 46, 2, 2023),
+(7, 28, 47, 2, 2023),
+(8, 28, 48, 2, 2023),
+(9, 28, 49, 2, 2023);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chuyennganh`
+-- Cấu trúc bảng cho bảng `baocao`
 --
 
-CREATE TABLE `CHUYENNGANH` (
-  `ID` INT(11) NOT NULL,
-  `TENCN` VARCHAR(255) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `baocao` (
+  `ID` int(11) NOT NULL,
+  `dangky_detai_ID` int(11) NOT NULL,
+  `ngay_bao_cao` date NOT NULL,
+  `nd_thuc_hien` varchar(255) NOT NULL,
+  `nd_sap_toi` varchar(255) NOT NULL,
+  `thoi_han` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `chuyennganh`
+-- Đang đổ dữ liệu cho bảng `baocao`
 --
 
-INSERT INTO `CHUYENNGANH` (
-  `ID`,
-  `TENCN`
-) VALUES (
-  1,
-  ''
-),
- -- --------------------------------------------------------
- --
- -- Table structure for table `dangky_detai`
- --
- CREATE TABLE `DANGKY_DETAI` (
-  `ID` INT(11) NOT NULL,
-  `TAIKHOAN_ID` INT(11) NOT NULL,
-  `BANGDT_ID` INT(11) NOT NULL,
-  `TRANGTHAI_ID` INT(11) NOT NULL,
-  `HOC_KY` INT(11) NOT NULL,
-  `NAM_HOC` INT(11) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
-
---
--- Dumping data for table `dangky_detai`
---
-
-
+INSERT INTO `baocao` (`ID`, `dangky_detai_ID`, `ngay_bao_cao`, `nd_thuc_hien`, `nd_sap_toi`, `thoi_han`) VALUES
+(1, 4, '2023-05-11', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, aspernatur. Esse, minus quo magnam reiciendis saepe molestiae optio ex exercitationem possimus quas nobis maxime eos. Dolor natus est recusandae rerum?', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, aspernatur. Esse, minus quo magnam reiciendis saepe molestiae optio ex exercitationem possimus quas nobis maxime eos. Dolor natus est recusandae rerum?', '2023-05-25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `detai`
+-- Cấu trúc bảng cho bảng `chuyennganh`
 --
 
-CREATE TABLE `DETAI` (
-  `ID` INT(11) NOT NULL,
-  `TENDT` VARCHAR(255) NOT NULL,
-  `MO_TADT` VARCHAR(255) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `chuyennganh` (
+  `ID` int(11) NOT NULL,
+  `tenCN` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `detai`
+-- Đang đổ dữ liệu cho bảng `chuyennganh`
 --
 
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `detai_loaidetai`
---
-
-CREATE TABLE `DETAI_LOAIDETAI` (
-  `ID` INT(11) NOT NULL,
-  `DETAI_ID` INT(11) NOT NULL,
-  `LOAIDETAI_ID` INT(11) NOT NULL,
-  `CHINHTHUC` INT(11) NOT NULL DEFAULT 0
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
-
---
--- Dumping data for table `detai_loaidetai`
---
-
-
+INSERT INTO `chuyennganh` (`ID`, `tenCN`) VALUES
+(1, ''),
+(2, 'CNTT'),
+(3, 'Khoa học máy tính');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gioitinh`
+-- Cấu trúc bảng cho bảng `dangky_detai`
 --
 
-CREATE TABLE `GIOITINH` (
-  `ID` INT(11) NOT NULL,
-  `TENGT` VARCHAR(255) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `dangky_detai` (
+  `ID` int(11) NOT NULL,
+  `taikhoan_ID` int(11) NOT NULL,
+  `bangdt_ID` int(11) NOT NULL,
+  `trangthai_ID` int(11) NOT NULL,
+  `hoc_ky` int(11) NOT NULL,
+  `nam_hoc` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `gioitinh`
+-- Đang đổ dữ liệu cho bảng `dangky_detai`
 --
 
-INSERT INTO `GIOITINH` (
-  `ID`,
-  `TENGT`
-) VALUES (
-  1,
-  ''
-),
-(
-  2,
-  'Nam'
-),
-(
-  3,
-  'Nữ'
-);
+INSERT INTO `dangky_detai` (`ID`, `taikhoan_ID`, `bangdt_ID`, `trangthai_ID`, `hoc_ky`, `nam_hoc`) VALUES
+(4, 27, 4, 2, 2, 2023),
+(5, 29, 5, 1, 2, 2023);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loaidetai`
+-- Cấu trúc bảng cho bảng `detai`
 --
 
-CREATE TABLE `LOAIDETAI` (
-  `ID` INT(11) NOT NULL,
-  `TEN_LOAI` VARCHAR(255) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `detai` (
+  `ID` int(11) NOT NULL,
+  `tenDT` varchar(255) NOT NULL,
+  `mo_taDT` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `loaidetai`
+-- Đang đổ dữ liệu cho bảng `detai`
 --
 
-INSERT INTO `LOAIDETAI` (
-  `ID`,
-  `TEN_LOAI`
-) VALUES (
-  3,
-  'Niên luận cơ sở'
-),
-(
-  4,
-  'Niên luận ngành'
-);
+INSERT INTO `detai` (`ID`, `tenDT`, `mo_taDT`) VALUES
+(6, 'Phân tích thiết kế hệ thống thông tin sử dụng biểu đồ UML', 'https://viblo.asia/p/phan-tich-thiet-ke-he-thong-thong-tin-su-dung-bieu-do-uml-phan-2-0bDM6wpAG2X4'),
+(7, 'Watch \"Project Management Tutorial  ( Complete Course )\" on YouTube', 'https://github.com/dappuniversity/eth-todo-list'),
+(8, 'Phần mềm chơi loto', ''),
+(9, 'Quản lý thông báo học bổng', ''),
+(10, 'Quản lý khách hàng thân thiết', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `taikhoan`
+-- Cấu trúc bảng cho bảng `detai_loaidetai`
 --
 
-CREATE TABLE `TAIKHOAN` (
-  `ID` INT(11) NOT NULL,
-  `TENTK` VARCHAR(255) NOT NULL,
-  `MAT_KHAU` VARCHAR(255) NOT NULL,
-  `HO_TEN` VARCHAR(255) NOT NULL,
-  `GIOITINH_ID` INT(11) NOT NULL,
-  `MATK` VARCHAR(8) NOT NULL,
-  `KHOA` INT(11) NOT NULL,
-  `TRANG_THAITK` INT(11) NOT NULL,
-  `CHUYENNGANH_ID` INT(11) NOT NULL,
-  `VAI_TRO` INT(11) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `detai_loaidetai` (
+  `ID` int(11) NOT NULL,
+  `detai_ID` int(11) NOT NULL,
+  `loaidetai_ID` int(11) NOT NULL,
+  `chinhthuc` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `taikhoan`
+-- Đang đổ dữ liệu cho bảng `detai_loaidetai`
 --
 
-INSERT INTO `TAIKHOAN` (
-  `ID`,
-  `TENTK`,
-  `MAT_KHAU`,
-  `HO_TEN`,
-  `GIOITINH_ID`,
-  `MATK`,
-  `KHOA`,
-  `TRANG_THAITK`,
-  `CHUYENNGANH_ID`,
-  `VAI_TRO`
-) VALUES (
-  26,
-  'admin',
-  '21232f297a57a5a743894a0e4a801fc3',
-  '',
-  1,
-  '',
-  0,
-  1,
-  1,
-  0
-),
-(
-  27,
-  'sv1',
-  'c4ca4238a0b923820dcc509a6f75849b',
-  'Trần Phước An',
-  2,
-  'B2007220',
-  42,
-  1,
-  2,
-  1
-),
-(
-  28,
-  'gv1',
-  'c4ca4238a0b923820dcc509a6f75849b',
-  'B',
-  2,
-  'G123',
-  0,
-  1,
-  2,
-  2
-),
-(
-  29,
-  'anb2007220@student.ctu.edu.vn',
-  'fa5b479eb905ae84db6ba0229d44f7fa',
-  'An',
-  2,
-  'B2007220',
-  46,
-  0,
-  2,
-  1
-);
+INSERT INTO `detai_loaidetai` (`ID`, `detai_ID`, `loaidetai_ID`, `chinhthuc`) VALUES
+(44, 6, 3, 1),
+(45, 7, 3, 0),
+(46, 8, 4, 1),
+(47, 9, 3, 1),
+(48, 10, 3, 1),
+(49, 10, 4, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trangthai`
+-- Cấu trúc bảng cho bảng `gioitinh`
 --
 
-CREATE TABLE `TRANGTHAI` (
-  `ID` INT(11) NOT NULL,
-  `TEN_TRANG_THAI` VARCHAR(255) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=UTF8MB4 COLLATE=UTF8MB4_GENERAL_CI;
+CREATE TABLE `gioitinh` (
+  `ID` int(11) NOT NULL,
+  `tenGT` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `trangthai`
+-- Đang đổ dữ liệu cho bảng `gioitinh`
 --
 
-INSERT INTO `TRANGTHAI` (
-  `ID`,
-  `TEN_TRANG_THAI`
-) VALUES (
-  1,
-  'Đề xuất'
-),
-(
-  2,
-  'Thực hiện'
-),
-(
-  3,
-  'Hoàn thành'
-),
-(
-  4,
-  'Chờ duyệt'
-);
+INSERT INTO `gioitinh` (`ID`, `tenGT`) VALUES
+(1, ''),
+(2, 'Nam'),
+(3, 'Nữ');
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Cấu trúc bảng cho bảng `loaidetai`
 --
 
---
--- Indexes for table `bangdt`
---
-ALTER TABLE `BANGDT` ADD PRIMARY KEY (`ID`), ADD KEY `BANGDT_IBFK_2` (`PHUTRACH_ID`), ADD KEY `DETAI_LOAIDETAI_ID` (`DETAI_LOAIDETAI_ID`);
+CREATE TABLE `loaidetai` (
+  `ID` int(11) NOT NULL,
+  `ten_loai` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for table `baocao`
---
-ALTER TABLE `BAOCAO` ADD PRIMARY KEY (`ID`), ADD KEY `DANGKY_DETAI_ID` (`DANGKY_DETAI_ID`);
-
---
--- Indexes for table `chuyennganh`
---
-ALTER TABLE `CHUYENNGANH` ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `dangky_detai`
---
-ALTER TABLE `DANGKY_DETAI` ADD PRIMARY KEY (`ID`), ADD KEY `DANGKY_DETAI_IBFK_1` (`TRANGTHAI_ID`), ADD KEY `TAIKHOAN_ID` (`TAIKHOAN_ID`), ADD KEY `BANGDT_ID` (`BANGDT_ID`);
-
---
--- Indexes for table `detai`
---
-ALTER TABLE `DETAI` ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `detai_loaidetai`
---
-ALTER TABLE `DETAI_LOAIDETAI` ADD PRIMARY KEY (`ID`), ADD KEY `DETAI_ID` (`DETAI_ID`), ADD KEY `DETAI_LOAIDETAI_IBFK_2` (`LOAIDETAI_ID`);
-
---
--- Indexes for table `gioitinh`
---
-ALTER TABLE `GIOITINH` ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `loaidetai`
---
-ALTER TABLE `LOAIDETAI` ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `taikhoan`
---
-ALTER TABLE `TAIKHOAN` ADD PRIMARY KEY (`ID`), ADD KEY `TAIKHOAN_IBFK_2` (`CHUYENNGANH_ID`), ADD KEY `GIOITINH_ID` (`GIOITINH_ID`);
-
---
--- Indexes for table `trangthai`
---
-ALTER TABLE `TRANGTHAI` ADD PRIMARY KEY (`ID`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Đang đổ dữ liệu cho bảng `loaidetai`
 --
 
---
--- AUTO_INCREMENT for table `bangdt`
---
-ALTER TABLE `BANGDT` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+INSERT INTO `loaidetai` (`ID`, `ten_loai`) VALUES
+(3, 'Niên luận cơ sở'),
+(4, 'Niên luận ngành');
+
+-- --------------------------------------------------------
 
 --
--- AUTO_INCREMENT for table `baocao`
+-- Cấu trúc bảng cho bảng `taikhoan`
 --
-ALTER TABLE `BAOCAO` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+CREATE TABLE `taikhoan` (
+  `ID` int(11) NOT NULL,
+  `tenTK` varchar(255) NOT NULL,
+  `mat_khau` varchar(255) NOT NULL,
+  `ho_ten` varchar(255) NOT NULL,
+  `gioitinh_ID` int(11) NOT NULL,
+  `maTK` varchar(8) NOT NULL,
+  `khoa` int(11) NOT NULL,
+  `trang_thaiTK` int(11) NOT NULL,
+  `chuyennganh_ID` int(11) NOT NULL,
+  `vai_tro` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- AUTO_INCREMENT for table `chuyennganh`
+-- Đang đổ dữ liệu cho bảng `taikhoan`
 --
-ALTER TABLE `CHUYENNGANH` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+INSERT INTO `taikhoan` (`ID`, `tenTK`, `mat_khau`, `ho_ten`, `gioitinh_ID`, `maTK`, `khoa`, `trang_thaiTK`, `chuyennganh_ID`, `vai_tro`) VALUES
+(26, 'admin', '21232f297a57a5a743894a0e4a801fc3', '', 1, '', 0, 1, 1, 0),
+(27, 'sv1', 'c4ca4238a0b923820dcc509a6f75849b', 'Trần Phước An', 2, 'B2007220', 42, 1, 2, 1),
+(28, 'gv1', 'c4ca4238a0b923820dcc509a6f75849b', 'B', 2, 'G123', 0, 1, 2, 2),
+(29, 'anb2007220@student.ctu.edu.vn', 'fa5b479eb905ae84db6ba0229d44f7fa', 'An', 2, 'B2007220', 46, 0, 2, 1);
+
+-- --------------------------------------------------------
 
 --
--- AUTO_INCREMENT for table `dangky_detai`
+-- Cấu trúc bảng cho bảng `trangthai`
 --
-ALTER TABLE `DANGKY_DETAI` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+CREATE TABLE `trangthai` (
+  `ID` int(11) NOT NULL,
+  `ten_trang_thai` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- AUTO_INCREMENT for table `detai`
+-- Đang đổ dữ liệu cho bảng `trangthai`
 --
-ALTER TABLE `DETAI` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+INSERT INTO `trangthai` (`ID`, `ten_trang_thai`) VALUES
+(1, 'Đề xuất'),
+(2, 'Thực hiện'),
+(3, 'Hoàn thành'),
+(4, 'Chờ duyệt');
 
 --
--- AUTO_INCREMENT for table `detai_loaidetai`
---
-ALTER TABLE `DETAI_LOAIDETAI` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
-
---
--- AUTO_INCREMENT for table `gioitinh`
---
-ALTER TABLE `GIOITINH` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `loaidetai`
---
-ALTER TABLE `LOAIDETAI` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `taikhoan`
---
-ALTER TABLE `TAIKHOAN` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
-
---
--- AUTO_INCREMENT for table `trangthai`
---
-ALTER TABLE `TRANGTHAI` MODIFY `ID` INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- Constraints for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Constraints for table `bangdt`
+-- Chỉ mục cho bảng `bangdt`
 --
-ALTER TABLE `BANGDT` ADD CONSTRAINT `BANGDT_IBFK_2` FOREIGN KEY (`PHUTRACH_ID`) REFERENCES `TAIKHOAN` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE, ADD CONSTRAINT `BANGDT_IBFK_3` FOREIGN KEY (`DETAI_LOAIDETAI_ID`) REFERENCES `DETAI_LOAIDETAI` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `bangdt`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `bangdt_ibfk_2` (`phutrach_ID`),
+  ADD KEY `detai_loaidetai_ID` (`detai_loaidetai_ID`);
 
 --
--- Constraints for table `baocao`
+-- Chỉ mục cho bảng `baocao`
 --
-ALTER TABLE `BAOCAO` ADD CONSTRAINT `BAOCAO_IBFK_1` FOREIGN KEY (`DANGKY_DETAI_ID`) REFERENCES `DANGKY_DETAI` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `baocao`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `dangky_detai_ID` (`dangky_detai_ID`);
 
 --
--- Constraints for table `dangky_detai`
+-- Chỉ mục cho bảng `chuyennganh`
 --
-ALTER TABLE `DANGKY_DETAI` ADD CONSTRAINT `DANGKY_DETAI_IBFK_1` FOREIGN KEY (`TRANGTHAI_ID`) REFERENCES `TRANGTHAI` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE, ADD CONSTRAINT `DANGKY_DETAI_IBFK_2` FOREIGN KEY (`TAIKHOAN_ID`) REFERENCES `TAIKHOAN` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE, ADD CONSTRAINT `DANGKY_DETAI_IBFK_3` FOREIGN KEY (`BANGDT_ID`) REFERENCES `BANGDT` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `chuyennganh`
+  ADD PRIMARY KEY (`ID`);
 
 --
--- Constraints for table `detai_loaidetai`
+-- Chỉ mục cho bảng `dangky_detai`
 --
-ALTER TABLE `DETAI_LOAIDETAI` ADD CONSTRAINT `DETAI_LOAIDETAI_IBFK_1` FOREIGN KEY (`DETAI_ID`) REFERENCES `DETAI` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE, ADD CONSTRAINT `DETAI_LOAIDETAI_IBFK_2` FOREIGN KEY (`LOAIDETAI_ID`) REFERENCES `LOAIDETAI` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `dangky_detai`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `dangky_detai_ibfk_1` (`trangthai_ID`),
+  ADD KEY `taikhoan_ID` (`taikhoan_ID`),
+  ADD KEY `bangdt_ID` (`bangdt_ID`);
 
 --
--- Constraints for table `taikhoan`
+-- Chỉ mục cho bảng `detai`
 --
-ALTER TABLE `TAIKHOAN` ADD CONSTRAINT `TAIKHOAN_IBFK_2` FOREIGN KEY (`CHUYENNGANH_ID`) REFERENCES `CHUYENNGANH` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE, ADD CONSTRAINT `TAIKHOAN_IBFK_3` FOREIGN KEY (`GIOITINH_ID`) REFERENCES `GIOITINH` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `detai`
+  ADD PRIMARY KEY (`ID`);
 
+--
+-- Chỉ mục cho bảng `detai_loaidetai`
+--
+ALTER TABLE `detai_loaidetai`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `detai_ID` (`detai_ID`),
+  ADD KEY `detai_loaidetai_ibfk_2` (`loaidetai_ID`);
+
+--
+-- Chỉ mục cho bảng `gioitinh`
+--
+ALTER TABLE `gioitinh`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Chỉ mục cho bảng `loaidetai`
+--
+ALTER TABLE `loaidetai`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Chỉ mục cho bảng `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `taikhoan_ibfk_2` (`chuyennganh_ID`),
+  ADD KEY `gioitinh_ID` (`gioitinh_ID`);
+
+--
+-- Chỉ mục cho bảng `trangthai`
+--
+ALTER TABLE `trangthai`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `bangdt`
+--
+ALTER TABLE `bangdt`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT cho bảng `baocao`
+--
+ALTER TABLE `baocao`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `chuyennganh`
+--
+ALTER TABLE `chuyennganh`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `dangky_detai`
+--
+ALTER TABLE `dangky_detai`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `detai`
+--
+ALTER TABLE `detai`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `detai_loaidetai`
+--
+ALTER TABLE `detai_loaidetai`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
+--
+-- AUTO_INCREMENT cho bảng `gioitinh`
+--
+ALTER TABLE `gioitinh`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `loaidetai`
+--
+ALTER TABLE `loaidetai`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT cho bảng `trangthai`
+--
+ALTER TABLE `trangthai`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `bangdt`
+--
+ALTER TABLE `bangdt`
+  ADD CONSTRAINT `bangdt_ibfk_2` FOREIGN KEY (`phutrach_ID`) REFERENCES `taikhoan` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bangdt_ibfk_3` FOREIGN KEY (`detai_loaidetai_ID`) REFERENCES `detai_loaidetai` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `baocao`
+--
+ALTER TABLE `baocao`
+  ADD CONSTRAINT `baocao_ibfk_1` FOREIGN KEY (`dangky_detai_ID`) REFERENCES `dangky_detai` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `dangky_detai`
+--
+ALTER TABLE `dangky_detai`
+  ADD CONSTRAINT `dangky_detai_ibfk_1` FOREIGN KEY (`trangthai_ID`) REFERENCES `trangthai` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dangky_detai_ibfk_2` FOREIGN KEY (`taikhoan_ID`) REFERENCES `taikhoan` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dangky_detai_ibfk_3` FOREIGN KEY (`bangdt_ID`) REFERENCES `bangdt` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `detai_loaidetai`
+--
+ALTER TABLE `detai_loaidetai`
+  ADD CONSTRAINT `detai_loaidetai_ibfk_1` FOREIGN KEY (`detai_ID`) REFERENCES `detai` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `detai_loaidetai_ibfk_2` FOREIGN KEY (`loaidetai_ID`) REFERENCES `loaidetai` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  ADD CONSTRAINT `taikhoan_ibfk_2` FOREIGN KEY (`chuyennganh_ID`) REFERENCES `chuyennganh` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `taikhoan_ibfk_3` FOREIGN KEY (`gioitinh_ID`) REFERENCES `gioitinh` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
