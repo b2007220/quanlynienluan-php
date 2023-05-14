@@ -29,13 +29,9 @@
             }
 
         }
-        function domain_exists($email, $record = 'MX'){
-            list($user, $domain) = explode('@', $email);
-            return checkdnsrr($domain, $record);
-        }
+
         if(isset($_POST['kichhoat'])){
             $taikhoan = addslashes($_POST['taikhoan']);
-            if(domain_exists($taikhoan)){
                 if(strpos($taikhoan,"@ctu.edu.vn") == false && strpos($taikhoan,"@student.ctu.edu.vn") == false){
                     echo"<script>Swal.fire({
                             icon: 'warning',
@@ -64,14 +60,6 @@
                         $mail -> kichhoat($taikhoan,$matkhau,$subject,$body);
                     }
                 }  
-            }
-            else{
-                echo"<script>Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Tài khoản email không tồn tại!',
-                  })</script>";
-            }    
         }
             
     ?>
