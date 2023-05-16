@@ -94,6 +94,11 @@
                 $sql = "DELETE FROM dangky_detai WHERE taikhoan_ID = '$sinhvien_ID' AND hoc_ky = '$hocky' AND nam_hoc = '$nam'";
                 $result = mysqli_query($conn,$sql);
             }
+            echo"<script>Swal.fire({
+                icon: 'info',
+                title: 'Thông báo',
+                text: 'Đã từ chối duyệt đề tài!',
+              })</script>";  
         }
     ?>
     <div class="container">
