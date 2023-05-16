@@ -21,7 +21,7 @@
             $('#example2').DataTable();
         });
     </script>
-    <title>Lịch sử báo cáo niên luận</title>
+    <title>Duyệt đề tài</title>
 </head>
 <body>
     <?php 
@@ -191,14 +191,14 @@
             <div class="detail">
                 <div class="recentOrders">
                     <div class="cardHeader">
-                        <h2>Lịch sử báo cáo</h2>
+                        <h2>Duyệt đề tài</h2>
                         <div class="button-box">
                             <div id ="btn2"></div>
                             <a href="gv_detai_hientai.php">
                                 <button type ="button" class="toggle-btn2" >Năm nay</button>
                             </a>
                             <a href="gv_duyetdetai.php">
-                                <button type ="button" class="toggle-btn1">Toàn bộ</button>
+                                <button type ="button" class="toggle-btn1">Duyệt đề tài</button>
                             </a>
                         </div>
                     </div>

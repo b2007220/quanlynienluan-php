@@ -60,7 +60,7 @@
                     echo"<script>Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
-                        text: 'Vui lòng đợi phản hồi của giáo viên!',
+                        text: 'Vui lòng đợi phản hồi của giảng viên!',
                       })</script>";
                 }
                 else if($row1['ten_trang_thai'] == 'Hoàn thành'){
@@ -90,7 +90,7 @@
                         echo"<script>Swal.fire({
                             icon: 'info',
                             title: 'Thông báo',
-                            text: 'Báo cáo tiến độ thành công thành công!',
+                            text: 'Báo cáo tiến độ thành công!',
                         })</script>";
                     }
                 }

@@ -265,6 +265,9 @@ body{
     vertical-align: middle;
     color: var(--black1);
 }
+.radio-group{
+    display: flex;
+}
 .radio + .radio{
     margin-left: 20px;
 }
@@ -425,6 +428,9 @@ table{
 }
 
 @media(max-width:991px){
+    .radio + .radio {
+        margin-left: 5px;
+    }
     .navigation{
         left: -300px;
     }

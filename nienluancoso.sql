@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 14, 2023 lúc 03:09 PM
+-- Thời gian đã tạo: Th5 16, 2023 lúc 06:20 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.2.0
 
@@ -109,8 +109,7 @@ CREATE TABLE `dangky_detai` (
 --
 
 INSERT INTO `dangky_detai` (`ID`, `taikhoan_ID`, `bangdt_ID`, `trangthai_ID`, `hoc_ky`, `nam_hoc`) VALUES
-(4, 27, 4, 2, 2, 2023),
-(5, 29, 5, 1, 2, 2023);
+(4, 27, 4, 2, 2, 2023);
 
 -- --------------------------------------------------------
 
@@ -225,8 +224,7 @@ CREATE TABLE `taikhoan` (
 INSERT INTO `taikhoan` (`ID`, `tenTK`, `mat_khau`, `ho_ten`, `gioitinh_ID`, `maTK`, `khoa`, `trang_thaiTK`, `chuyennganh_ID`, `vai_tro`) VALUES
 (26, 'admin', '21232f297a57a5a743894a0e4a801fc3', '', 1, '', 0, 1, 1, 0),
 (27, 'sv1', 'c4ca4238a0b923820dcc509a6f75849b', 'Trần Phước An', 2, 'B2007220', 42, 1, 2, 1),
-(28, 'gv1', 'c4ca4238a0b923820dcc509a6f75849b', 'B', 2, 'G123', 0, 1, 2, 2),
-(29, 'anb2007220@student.ctu.edu.vn', 'fa5b479eb905ae84db6ba0229d44f7fa', 'An', 2, 'B2007220', 46, 0, 2, 1);
+(28, 'gv1', 'c4ca4238a0b923820dcc509a6f75849b', 'B', 2, 'G123', 0, 1, 2, 2);
 
 -- --------------------------------------------------------
 
