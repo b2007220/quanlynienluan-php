@@ -1,6 +1,8 @@
 <?php
     session_start();
-    include('sendmail.php');
+    include('./conn.php');
+    include('./sendmail.php');
+    include('./validate.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,21 +17,6 @@
 </head>
 <body?>
     <?php
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
-        if(isset($_SESSION['taikhoan_ID'])){
-            if($_SESSION['vai_tro'] == 1 ){
-                header('location:sv_trangchu.php');
-            }
-            else if($_SESSION['vai_tro'] == 2){
-                header('location:gv_nlcoso.php');
-            }
-            else if($_SESSION['vai_tro'] == 0){
-                header('location:ad_ql_tk.php');
-            }
-
-        }
-
         if(isset($_POST['kichhoat'])){
             $taikhoan = addslashes($_POST['taikhoan']);
                 if(strpos($taikhoan,"@ctu.edu.vn") == false && strpos($taikhoan,"@student.ctu.edu.vn") == false){
@@ -61,20 +48,19 @@
                     }
                 }  
         }
-            
     ?>
     <div class="login-box">
         <div class="button-box">
             <div id ="btn2"></div>
-            <a href="dangnhap.php">
+            <a href="login.php">
                 <button type ="button" class="toggle-btn" >Đăng nhập</button>
             </a>
-            <a href="taikhoan.php">
+            <a href="active.php">
                 <button type ="button" class="toggle-btn" >Kích hoạt</button>
             </a>
         </div>
         <div class="form-container">
-            <form method="post" action="taikhoan.php" id="kichhoat">                
+            <form method="post" action="active.php" id="kichhoat">                
                     <div class="user-box">
                         <input type="text" name="taikhoan" required="" autocomplete="off">
                         <label for="taikhoan">Email trường</label>

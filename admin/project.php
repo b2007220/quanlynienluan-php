@@ -1,5 +1,8 @@
 <?php
     session_start();
+    include('../conn.php');
+    include('../time.php');
+    include('./validate.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +11,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -23,27 +26,6 @@
 
 <body>
     <?php 
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
-        if(!isset($_SESSION['taikhoan_ID'])){
-            header('location:dangnhap.php');
-        }
-        if($_SESSION['vai_tro'] == 1){
-            header('location:sv_trangchu.php');
-        }
-        if($_SESSION['vai_tro'] == 2){
-            header('location:gv_nlcoso.php');
-        }
-
-        $month = date("m");
-        $nam =  date("Y");
-        if($month >= 1 && $month <=5){
-            $hocky = 2;
-        }
-        else if($month >= 6  && $month <=7){
-            $hocky = 3;
-        }
-        else $hocky = 1;
         if(isset($_POST['xoa'])){
             $CN_ID = $_POST['xoa'];
             $sql = "DELETE FROM detai WHERE ID = $CN_ID";
@@ -56,50 +38,9 @@
         }
     ?>
     <div class="container">
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="icon">
-                            <ion-icon name="school-outline"></ion-icon>
-                        </span>
-                        <span class="title">Admin</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="ad_ql_tk.php">
-                        <span class="icon">
-                        <ion-icon name="person-outline"></ion-icon>
-                        </span>
-                        <span class="title">Quản lí tài khoản</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="ad_ql_cn.php">
-                        <span class="icon">
-                            <ion-icon name="book-outline"></ion-icon>
-                        </span>
-                        <span class="title">Quản lí chuyên ngành</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="ad_ql_dt.php">
-                        <span class="icon">
-                        <ion-icon name="save-outline"></ion-icon>
-                        </span>
-                        <span class="title">Quản lí đề tài</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="logout.php">
-                        <span class="icon">
-                            <ion-icon name="exit-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đăng xuất</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <?php
+        include('navigation.php');
+        ?>
         <div class="main">
             <!-- topbar -->
             <div class="topbar">
@@ -116,7 +57,7 @@
                     <div class="cardHeader">
                         <h2>Bảng đề tài</h2>
                     </div>
-                    <form action="ad_ql_dt.php" method="POST">
+                    <form action="project.php" method="POST">
                         <table id ="example" style="width:100%">
                             <thead>
                                 <tr>

@@ -1,5 +1,7 @@
 <?php
     session_start();
+    include('./validate.php');
+    include('./conn.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,21 +16,8 @@
 </head>
 <body?>
     <?php
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
-        if(isset($_SESSION['taikhoan_ID'])){
-            if($_SESSION['vai_tro'] == 1 ){
-                header('location:sv_trangchu.php');
-            }
-            else if($_SESSION['vai_tro'] == 2){
-                header('location:gv_nlcoso.php');
-            }
-            else if($_SESSION['vai_tro'] == 0){
-                header('location:ad_ql_tk.php');
-            }
-        }
         if(!isset($_SESSION['demo_tai_khoan'])){
-            header('location:taikhoan.php');
+            header('location:active.php');
         }
         $demo_taikhoan = $_SESSION['demo_tai_khoan'];
         $matkhau = $_SESSION ['mat_khau'];
@@ -58,7 +47,7 @@
                     confirmButtonText: 'Xác nhận',
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      window.location.href = 'dangnhap.php';
+                      window.location.href = 'login.php';
                     }
                   })</script>";
             }
@@ -75,15 +64,15 @@
     <div class="login-box">
         <div class="button-box">
             <div id ="btn2"></div>
-            <a href="dangnhap.php">
+            <a href="login.php">
                 <button type ="button" class="toggle-btn" >Đăng nhập</button>
             </a>
-            <a href="taikhoan.php">
+            <a href="active.php">
                 <button type ="button" class="toggle-btn" >Kích hoạt</button>
             </a>
         </div>
         <div class="form-container">
-            <form method="post" action="matkhau.php" id="kichhoat">                
+            <form method="post" action="confirm.php" id="kichhoat">                
                 <div class="user-box">
                     <input type="password" name="matkhau2" required autocomplete="off">
                     <label for="matkhau2">Mật khẩu được gửi đến</label>

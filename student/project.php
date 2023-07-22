@@ -1,5 +1,8 @@
 <?php
     session_start();
+    include('./validate.php');
+    include('../time.php');
+    include('../conn.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +10,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -21,29 +24,8 @@
 </head>
 <body>
     <?php 
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
         $taikhoan_ID = $_SESSION['taikhoan_ID']; 
     
-    
-        if(!isset($_SESSION['taikhoan_ID'])){
-            header('location:dangnhap.php');
-        }
-        if($_SESSION['vai_tro'] == 2){
-            header('location:gv_nlcoso.php');
-        }
-        if($_SESSION['vai_tro'] == 0){
-            header('location:ad_ql_tk.php');
-        }
-        $month = date("m");
-        $nam =  date("Y");
-        if($month >= 1 && $month <=5){
-            $hocky = 2;
-        }
-        else if($month >= 6  && $month <=7){
-            $hocky = 3;
-        }
-        else $hocky = 1;
         $sql = "SELECT chuyennganh_ID FROM TAIKHOAN WHERE ID = $taikhoan_ID";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($result);
@@ -221,68 +203,9 @@
         }
     ?>
     <div class="container">
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="icon">
-                            <ion-icon name="school-outline"></ion-icon>
-                        </span>
-                        <span class="title">Sinh viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="sv_trangchu.php">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-                        </span>
-                        <span class="title">Trang chủ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="sv_thongtin.php">
-                        <span class="icon">
-                            <ion-icon name="person-outline"></ion-icon>
-                        </span>
-                        <span class="title">Thông tin</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="sv_detai.php">
-                        <span class="icon">
-                            <ion-icon name="newspaper-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đề tài</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="sv_baocaotiendo.php">
-                        <span class="icon">
-                            <ion-icon name="reader-outline"></ion-icon>
-                        </span>
-                        <span class="title">Báo cáo tiến độ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="sv_doimatkhau.php">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                            </ion-icon>
-                        </span>
-                        <span class="title">Đổi mật khẩu</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="logout.php">
-                        <span class="icon">
-                            <ion-icon name="exit-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đăng xuất</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <?php
+        include('navigation.php');
+        ?>
         <div class="main">
             <!-- topbar -->
             <div class="topbar">
@@ -317,7 +240,7 @@
                             }
                         ?>
                     </div>
-                    <form action="sv_detai.php" method="POST">
+                    <form action="project.php" method="POST">
                         <div class="row50">
                             <div class="input-box">
                                 <span>Giảng viên hướng dẫn đề tài</span>
@@ -396,7 +319,7 @@
                     <div class="cardHeader">
                         <h2>Đề xuất đề tài mới</h2>
                     </div>
-                    <form action="sv_detai.php" method="POST">
+                    <form action="project.php" method="POST">
                         <div class="row100">
                             <div class="input-box">
                                 <span>Đề xuất</span>

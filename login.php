@@ -1,5 +1,7 @@
 <?php
     session_start();
+    include('./validate.php');
+    include('./conn.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,23 +15,7 @@
     <title>Trang đăng nhập</title>
 </head>
 <body?>
-    <?php
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
-        
-        if(isset($_SESSION['taikhoan_ID'])){
-            if($_SESSION['vai_tro'] == 1 ){
-                header('location:sv_trangchu.php');
-            }
-            else if($_SESSION['vai_tro'] == 2){
-                header('location:gv_nlcoso.php');
-            }
-            else if($_SESSION['vai_tro'] == 0){
-                header('location:ad_ql_tk.php');
-            }
-        }
-
-        
+    <?php 
         if(isset($_POST['dangnhap'])){
             $taikhoan = addslashes($_POST['taikhoan']);
             $matkhau = md5(addslashes($_POST['matkhau']));
@@ -67,7 +53,7 @@
                     confirmButtonText: 'Xác nhận',
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      window.location.href = 'dangnhap.php';
+                      window.location.href = 'login.php';
                     }
                   })</script>";
             }           
@@ -76,15 +62,15 @@
     <div class="login-box">
         <div class="button-box">
             <div id ="btn1"></div>
-            <a href="dangnhap.php">
+            <a href="login.php">
                 <button type ="button" class="toggle-btn" >Đăng nhập</button>
             </a>
-            <a href="taikhoan.php">
+            <a href="active.php">
                 <button type ="button" class="toggle-btn" >Kích hoạt</button>
             </a>
         </div>
         <div class="form-container">
-            <form method="post" id="dangnhap" action="dangnhap.php">
+            <form method="post" id="dangnhap" action="login.php">
                 <div class="user-box">
                     <input type="text" name="taikhoan" required="" autocomplete="off">
                     <label for="taikhoan">Tài khoản</label>

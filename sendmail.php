@@ -49,7 +49,7 @@ class Mail{
             confirmButtonText: 'Xác nhận',
             }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href = 'matkhau.php';
+                  window.location.href = 'confirm.php';
                 }
               })
             </script>";
@@ -58,7 +58,7 @@ class Mail{
             echo"<script>Swal.fire({
                 icon: 'error',
                 title: 'Lỗi',
-                text: 'Không tìm thấy tài khoản được ghi',
+                text: 'Lỗi hệ thống',
               })</script>";
         }
     }   

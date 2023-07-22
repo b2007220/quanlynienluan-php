@@ -4,5 +4,5 @@
         unset($_SESSION['taikhoan']);
     }
     session_destroy();
-    header('Location:dangnhap.php')
+    header('Location:login.php')
 ?>
