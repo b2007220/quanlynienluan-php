@@ -1,11 +1,11 @@
 <?php
  if(!isset($_SESSION['taikhoan_ID'])){
-    header('location:dangnhap.php');
+    header('location:../login.php');
 }
 if($_SESSION['vai_tro'] == 2){
-    header('location:gv_nlcoso.php');
+    header('location:./teacher/main.php');
 }
 if($_SESSION['vai_tro'] == 0){
-    header('location:ad_ql_tk.php');
+    header('location:./admin/main.php');
 }
 ?>
