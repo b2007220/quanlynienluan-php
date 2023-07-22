@@ -98,7 +98,7 @@
     ?>
     <div class="container">
         <?php
-        include('navigation.php');
+        include('./navigation.php');
         ?>
         <div class="main">
             <!-- topbar -->

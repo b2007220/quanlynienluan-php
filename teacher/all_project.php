@@ -1,5 +1,8 @@
 <?php
     session_start();
+    include('./validate.php');
+    include('../time.php');
+    include('../conn.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,30 +26,7 @@
 
 <body>
     <?php 
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
-
         $taikhoan_ID = $_SESSION['taikhoan_ID']; 
-
-        if(!isset($_SESSION['taikhoan_ID'])){
-            header('location:dangnhap.php');
-        }
-        if($_SESSION['vai_tro'] == 1){
-            header('location:sv_trangchu.php');
-        }
-        if($_SESSION['vai_tro'] == 0){
-            header('location:ad_ql_tk.php');
-        }
-
-        $month = date("m");
-        $nam =  date("Y");
-        if($month >= 1 && $month <=5){
-            $hocky = 2;
-        }
-        else if($month >= 6  && $month <=7){
-            $hocky = 3;
-        }
-        else $hocky = 1;
         if(isset($_POST['sudunglai'])){
             $detai_loaidetai_ID = $_POST['sudunglai'];
             $sql = "SELECT bangdt.ID 
@@ -90,68 +70,9 @@
         }
     ?>
     <div class="container">
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="icon">
-                            <ion-icon name="cafe-outline"></ion-icon>
-                        </span>
-                        <span class="title">Giảng viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_nlcoso.php">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-
-                        </span>
-                        <span class="title">Niên luận học kỳ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_detai_hientai.php">
-                        <span class="icon">
-                            <ion-icon name="newspaper-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đề tài</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_lichsu.php">
-                        <span class="icon">
-                            <ion-icon name="today-outline"></ion-icon>
-                        </span>
-                        <span class="title">Lịch sử báo cáo</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_thongtin.php">
-                        <span class="icon">
-                            <ion-icon name="person-outline"></ion-icon>
-                        </span>
-                        <span class="title">Thông tin giảng viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_doimatkhau.php">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                            </ion-icon>
-                        </span>
-                        <span class="title">Đổi mật khẩu</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="logout.php">
-                        <span class="icon">
-                            <ion-icon name="exit-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đăng xuất</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <?php
+        include('./navigation.php')
+        ?>
         <div class="main">
             <!-- topbar -->
             <div class="topbar">
@@ -186,15 +107,15 @@
                         <h2>Đề tài</h2>
                         <div class="button-box">
                             <div id ="btn2"></div>
-                            <a href="gv_lichsu.php">
+                            <a href="./record.php">
                                 <button type ="button" class="toggle-btn2" >Lịch sử</button>
                             </a>
-                            <a href="gv_detai_toanbo.php">
+                            <a href="./all_project.php">
                                 <button type ="button" class="toggle-btn1">Đề tài các năm</button>
                             </a>
                         </div>
                     </div>
-                    <form action="gv_detai_toanbo.php" method="POST">
+                    <form action="all_project.php" method="POST">
                         <table id="example"  style="width:100%">
                             <thead>
                                 <tr>

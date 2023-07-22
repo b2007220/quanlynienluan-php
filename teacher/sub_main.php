@@ -1,5 +1,8 @@
 <?php
     session_start();
+    include('./validate.php');
+    include('../time.php');
+    include('../conn.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +11,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -21,36 +24,13 @@
             $('#example2').DataTable();
         });
     </script>
-    <title>Trang chủ niên luận cơ sở</title>
+    <title>Trang chủ niên luận ngành</title>
 </head>
 
 <body>
     <?php 
-        $conn = mysqli_connect("localhost", "root", "", "nienluancoso");
-        $conn -> set_charset("utf8");
         $taikhoan_ID = $_SESSION['taikhoan_ID']; 
-
-        if(!isset($_SESSION['taikhoan_ID'])){
-            header('location:dangnhap.php');
-        }
-        if($_SESSION['vai_tro'] == 1){
-            header('location:sv_trangchu.php');
-        }
-        if($_SESSION['vai_tro'] == 0){
-            header('location:ad_ql_tk.php');
-        }
-
-        $month = date("m");
-        $nam =  date("Y");
-        if($month >= 1 && $month <=5){
-            $hocky = 2;
-        }
-        else if($month >= 6  && $month <=7){
-            $hocky = 3;
-        }
-        else $hocky = 1;
-         
-        $sql = "SELECT ID FROM loaidetai WHERE ten_loai = 'Niên luận cơ sở'";
+        $sql = "SELECT ID FROM loaidetai WHERE ten_loai = 'Niên luận ngành'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         $loai_de_tai_id = $row['ID'];
@@ -88,68 +68,9 @@
         }
     ?>
     <div class="container">
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="icon">
-                            <ion-icon name="cafe-outline"></ion-icon>
-                        </span>
-                        <span class="title">Giảng viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_nlcoso.php">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-
-                        </span>
-                        <span class="title">Niên luận học kỳ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_detai_hientai.php">
-                        <span class="icon">
-                            <ion-icon name="newspaper-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đề tài</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_lichsu.php">
-                        <span class="icon">
-                            <ion-icon name="today-outline"></ion-icon>
-                        </span>
-                        <span class="title">Lịch sử báo cáo</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_thongtin.php">
-                        <span class="icon">
-                            <ion-icon name="person-outline"></ion-icon>
-                        </span>
-                        <span class="title">Thông tin giảng viên</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="gv_doimatkhau.php">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                            </ion-icon>
-                        </span>
-                        <span class="title">Đổi mật khẩu</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="logout.php">
-                        <span class="icon">
-                            <ion-icon name="exit-outline"></ion-icon>
-                        </span>
-                        <span class="title">Đăng xuất</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <?php
+        include('./navigation.php')
+        ?>
         <div class="main">
             <!-- topbar -->
             <div class="topbar">
@@ -157,7 +78,7 @@
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
                 <div class="username">
-                    <?php
+                <?php
                         $sql = "SELECT ho_ten, gioitinh_id,tenTK FROM taikhoan WHERE ID = '$taikhoan_ID'";
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_assoc($result);
@@ -183,12 +104,12 @@
                     <div class="cardHeader">
                         <h2>Tiến độ báo cáo</h2>
                         <div class="button-box">
-                            <div id ="btn1"></div>
-                            <a href="gv_nlcoso.php">
-                                <button type ="button" class="toggle-btn1" >Niên luận cơ sở</button>
+                            <div id ="btn2"></div>
+                            <a href="main.php">
+                                <button type ="button" class="toggle-btn2" >Niên luận cơ sở</button>
                             </a>
-                            <a href="gv_nlnganh.php">
-                                <button type ="button" class="toggle-btn2">Niên luận ngành</button>
+                            <a href="sub_main.php">
+                                <button type ="button" class="toggle-btn1" >Niên luận ngành</button>
                             </a>
                         </div>
                     </div>
@@ -204,7 +125,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                $sql = "SELECT dangky_detai.taikhoan_ID,ngay_bao_cao,nd_thuc_hien,nd_sap_toi,thoi_han, maTK
+                                $sql = "SELECT dangky_detai.taikhoan_ID,ngay_bao_cao,nd_thuc_hien,nd_sap_toi,thoi_han,maTK
                                         FROM baocao JOIN dangky_detai ON dangky_detai.ID = dangky_detai_ID
                                         JOIN bangdt ON bangdt_ID = bangdt.ID
                                         JOIN detai_loaidetai ON detai_loaidetai_ID = detai_loaidetai.ID
@@ -215,7 +136,7 @@
                                     $timkiem = addslashes($_POST['timkiem']);
                                     $sql = $sql . " dangky_detai.taikhoan_ID = '$timkiem' AND";
                                 }
-                                $sql = $sql. " phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = $loai_de_tai_id
+                                $sql = $sql. " phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = '$loai_de_tai_id'
                                         ORDER BY ngay_bao_cao DESC
                                         LIMIT 15";
                                 $result = mysqli_query($conn, $sql);
@@ -237,26 +158,26 @@
                     <div class="cardHeader">
                         <h2>Học sinh phụ trách</h2>
                     </div>
-                    <form action="gv_nlcoso.php" method="POST">
-                        <table id = "example2"  style="width:100%">
+                    <form action="sub_main.php" method="POST">
+                        <table id="example2"  style="width:100%">
                             <thead>
                                 <tr>
                                     <td>Họ tên</td>
                                     <td>Đề tài</td>
                                     <td>Trạng thái</td>
                                     <td>Thao tác</td>
-
+           
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $sql ="SELECT ho_ten, tenDT, dangky_detai.taikhoan_ID, ten_trang_thai,tenTK,maTK
+                                $sql ="SELECT ho_ten, tenDT, dangky_detai.taikhoan_ID,ten_trang_thai
                                 FROM taikhoan JOIN  dangky_detai ON taikhoan.ID = taikhoan_ID
                                         JOIN bangdt ON bangdt_ID = bangdt.ID
                                         JOIN detai_loaidetai ON detai_loaidetai_ID = detai_loaidetai.ID
                                         JOIN detai ON detai.ID = detai_ID
                                         JOIN trangthai ON trangthai_ID = trangthai.ID
-                                        WHERE phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND dangky_detai.nam_hoc = '$nam' AND  dangky_detai.hoc_ky = '$hocky'AND loaidetai_ID = $loai_de_tai_id";
+                                        WHERE phutrach_ID = '$taikhoan_ID' AND bangdt.nam_hoc = '$nam' AND  bangdt.hoc_ky = '$hocky' AND loaidetai_ID = '$loai_de_tai_id'";
                                 $result = mysqli_query($conn, $sql);
                                 while($row = mysqli_fetch_assoc($result)){ 
                             ?>
@@ -281,8 +202,11 @@
                                         else if($row['ten_trang_thai'] == 'Chờ duyệt'){
                                             echo '<span class="status request">Chờ duyệt</span>';
                                         }                                
-                                    ?></td>
-                                    <td><button class="btn" name="timkiem" value="<?php echo $row["taikhoan_ID"]; ?>">
+                                        else if($row['ten_trang_thai'] == 'Chờ duyệt'){
+                                            echo '<span class="status request">Chờ duyệt</span>';
+                                        }
+                                    ?>
+                                    <><button class="btn" name="timkiem" value="<?php echo $row["taikhoan_ID"]; ?>">
                                             <ion-icon name="eye-outline"></ion-icon>
                                         </button>
                                     <button class="btn" name="hoanthanh" value="<?php echo $row["taikhoan_ID"]; ?>">
